@@ -19,7 +19,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+
+    /* Path aliases for local packages */
+    "paths": {
+      "@gergling/ui-components": ["../gds-gergling-design-system/ui-components/src/index.ts"]
+    }
   },
   "include": ["src"]
 }

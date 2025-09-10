@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Pane } from 'ui-components';
+import { Pane } from '@gergling/ui-components';
 
 const PageContainer = styled.div`
   max-width: 800px;
