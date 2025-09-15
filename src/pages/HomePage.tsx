@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Pane } from '@gergling/ui-components';
+import Blog from '../features/blogs/components/Blog';
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -33,6 +34,7 @@ const HomePage: React.FC = () => {
         Navigating to the 'About' page will reveal a brief, and equally absurd, description of our firm's mission and ethos.
       </Paragraph>
       <Pane>What a pane in my ash.</Pane>
+      <Blog />
     </PageContainer>
   );
 };

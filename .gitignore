@@ -6,6 +6,7 @@
 
 # build cache
 .vite
+.sanity-schema
 
 # logs
 npm-debug.log
