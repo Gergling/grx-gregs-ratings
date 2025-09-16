@@ -1,0 +1,304 @@
+{
+  "elements": [
+    {
+      "type": "radiogroup",
+      "name": "q1_printer_jam",
+      "title": "You have a paper jam in the office printer.",
+      "choices": [
+        { "value": "warrior", "text": "Call the IT department and report the broken equipment, requesting that they fix it." },
+        { "value": "rogue", "text": "Send the document to another department's printer and claim it's for an urgent meeting." },
+        { "value": "mage", "text": "Carefully open the printer, remove the jammed paper, and re-feed it into the machine in a manner that re-educates the device about its purpose." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q2_bus_loud_talker",
+      "title": "The person next to you on the bus is having a very loud, annoying conversation on the phone.",
+      "choices": [
+        { "value": "warrior", "text": "You politely but firmly ask them to lower their voice as it's disturbing other passengers." },
+        { "value": "rogue", "text": "You start a fake phone call of your own, speaking loudly about a sensitive business deal to drown them out." },
+        { "value": "mage", "text": "You focus intently on the physical object of their phone, trying to mentally disrupt its wireless signal." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q3_missing_screw",
+      "title": "You are assembling a piece of flat-pack furniture and a crucial screw is missing from the box.",
+      "choices": [
+        { "value": "warrior", "text": "You box it all back up and drive to the store to get a replacement kit or a refund." },
+        { "value": "rogue", "text": "You go to a neighbour's house, ask to borrow a toolbox, and 'accidentally' leave with a similar-looking screw." },
+        { "value": "mage", "text": "You re-evaluate the design and use a combination of string, a paperclip, and a thumbtack to create a more structurally sound connection." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q4_bad_gift",
+      "title": "A relative gives you a terrible gift that you would never use.",
+      "choices": [
+        { "value": "warrior", "text": "You tell them thank you, but later you will politely explain that it's not for you and ask if you can exchange it." },
+        { "value": "rogue", "text": "You praise the gift excessively, then list it for sale on an auction site before you even get home." },
+        { "value": "mage", "text": "You thank them and explain that the item has a 'beautiful energy' and can be repurposed for a completely different function you have in mind." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q5_noisy_neighbour",
+      "title": "Your neighbour is having a loud party late at night, and you have to get up early.",
+      "choices": [
+        { "value": "warrior", "text": "You go over and knock on their door to ask them to keep the noise down." },
+        { "value": "rogue", "text": "You anonymously report them to the local council's noise complaint line." },
+        { "value": "mage", "text": "You create a sound-absorbing pillow fortress and listen to a recording of white noise, focusing your thoughts on peace and quiet until you fall asleep." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q6_slow_computer",
+      "title": "Your work computer is running incredibly slowly.",
+      "choices": [
+        { "value": "warrior", "text": "You submit a ticket to the IT help desk with a detailed description of the problem and your system specs." },
+        { "value": "rogue", "text": "You download an unauthorised system 'accelerator' software from the internet and run it in the background." },
+        { "value": "mage", "text": "You open the Task Manager and stare at the list of processes, mentally willing the most resource-intensive ones to close." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q7_restaurant_mistake",
+      "title": "The waiter brings you the wrong dish at a restaurant.",
+      "choices": [
+        { "value": "warrior", "text": "You tell the waiter it's the wrong order and ask them to bring what you originally requested." },
+        { "value": "rogue", "text": "You start eating it anyway, and if they come by to check on you, you tell them it’s 'almost right' and get a free dessert." },
+        { "value": "mage", "text": "You imagine the ingredients of the correct dish, visualising it as you consume the one in front of you." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q8_public_speaking",
+      "title": "You have to give an impromptu speech in front of a large group of people.",
+      "choices": [
+        { "value": "warrior", "text": "You take a deep breath, walk to the front, and confidently speak what you know to be true." },
+        { "value": "rogue", "text": "You deflect the request, telling the person next to you that they have 'more experience' and would be better suited to the task." },
+        { "value": "mage", "text": "You quickly analyse the crowd, identifying a pattern of shared anxieties, then deliver a speech filled with abstract metaphors to bypass their logical defenses." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q9_locked_door",
+      "title": "You are locked out of your flat.",
+      "choices": [
+        { "value": "warrior", "text": "You call a locksmith to come and open the door for you." },
+        { "value": "rogue", "text": "You climb through a less secure window on the ground floor, hoping nobody sees you." },
+        { "value": "mage", "text": "You sit down in front of the door, concentrate, and visualise your key turning in the lock, hoping to manifest the correct sequence of events." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q10_slow_car_in_front",
+      "title": "A car in front of you is driving well below the speed limit on a single-lane road.",
+      "choices": [
+        { "value": "warrior", "text": "You follow them patiently, maintaining a safe distance, as it is the correct and lawful thing to do." },
+        { "value": "rogue", "text": "You overtake them quickly and illegally on the first straight section of road you can find." },
+        { "value": "mage", "text": "You put on music with a specific rhythm that you hope will subtly influence the other driver's subconscious mind into speeding up." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q11_broken_coffee_machine",
+      "title": "The coffee machine at work is broken and you have a meeting in five minutes.",
+      "choices": [
+        { "value": "warrior", "text": "You go to the kitchen to boil water and make instant coffee, as it is the fastest conventional way to get a drink." },
+        { "value": "rogue", "text": "You go to the corner shop and buy a coffee, but tell your manager you were caught in traffic." },
+        { "value": "mage", "text": "You sit by the coffee machine and, using the power of your mind, try to re-route the internal circuits and repair it telekinetically." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q12_spilled_drink",
+      "title": "You spill a drink on your friend's carpet at their house.",
+      "choices": [
+        { "value": "warrior", "text": "You immediately get on your hands and knees and start scrubbing it with a cloth, apologising profusely." },
+        { "value": "rogue", "text": "You try to cover the stain with a throw pillow or a piece of furniture and pretend nothing happened." },
+        { "value": "mage", "text": "You explain to your friend that it's a blessing in disguise, as the stain is now an abstract representation of your enduring friendship." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q13_social_gathering_awkward_silence",
+      "title": "There's an awkward silence at a social gathering you're attending.",
+      "choices": [
+        { "value": "warrior", "text": "You break the silence by asking everyone a direct and simple question about their day." },
+        { "value": "rogue", "text": "You quickly look at your phone, making it seem like you're responding to an urgent message." },
+        { "value": "mage", "text": "You close your eyes and focus on the collective mood of the room, attempting to shift the energy by thinking about an interesting topic." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q14_bad_wifi",
+      "title": "The wifi at a coffee shop you're in is so slow it's unusable.",
+      "choices": [
+        { "value": "warrior", "text": "You go to the counter and politely ask if they can reset the router." },
+        { "value": "rogue", "text": "You connect to your neighbour's unsecure network without their permission." },
+        { "value": "mage", "text": "You open your laptop, stare at the router, and run a series of complex network diagnostics, trying to understand and manipulate the data flow." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q15_crowded_train",
+      "title": "You're on a crowded train and can't find a seat.",
+      "choices": [
+        { "value": "warrior", "text": "You stand up and hold the handrail, accepting the situation as it is and waiting for the next station." },
+        { "value": "rogue", "text": "You loudly fake a cough and sniffle, hoping a seated passenger will get up to distance themselves from your 'illness'." },
+        { "value": "mage", "text": "You close your eyes and meditate, creating a mental space around yourself that is completely empty and peaceful." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q16_flatmate_mess",
+      "title": "Your flatmate consistently leaves a mess in the kitchen.",
+      "choices": [
+        { "value": "warrior", "text": "You confront your flatmate directly and ask them to clean up after themselves." },
+        { "value": "rogue", "text": "You put all of their dirty dishes in their bed as a passive-aggressive hint." },
+        { "value": "mage", "text": "You draw a diagram of a clean kitchen on the fridge with a marker and leave it there, hoping to change their energy and habits." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q17_lost_keys",
+      "title": "You can't find your keys just as you're about to leave the house.",
+      "choices": [
+        { "value": "warrior", "text": "You methodically retrace your steps and check all of the logical places they could be." },
+        { "value": "rogue", "text": "You go through your housemate's belongings to see if they've accidentally picked them up." },
+        { "value": "mage", "text": "You close your eyes and mentally 'scan' the house, hoping to get a psychic feeling for where they are." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q18_stuck_in_a_queue",
+      "title": "You're stuck in a very long queue at the post office.",
+      "choices": [
+        { "value": "warrior", "text": "You wait patiently, knowing that your turn will eventually come." },
+        { "value": "rogue", "text": "You pretend you're meeting someone who is already at the front of the line, and you go to join them." },
+        { "value": "mage", "text": "You watch the people ahead of you, trying to calculate the probability of when you will reach the front." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q19_flat_tyre",
+      "title": "You have a flat tyre on your bicycle far from home.",
+      "choices": [
+        { "value": "warrior", "text": "You pull out your tyre repair kit and methodically fix it on the side of the road." },
+        { "value": "rogue", "text": "You hitchhike with a passing driver, making up a story about a family emergency." },
+        { "value": "mage", "text": "You inflate the tyre with a small pump and then spend the ride home visualising the rubber and air molecules working together to keep it inflated." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q20_bad_online_review",
+      "title": "You find a bad online review of a small business you own.",
+      "choices": [
+        { "value": "warrior", "text": "You respond to the review professionally, addressing their concerns and offering to resolve the issue." },
+        { "value": "rogue", "text": "You create a fake account and post several highly positive reviews to offset the negative one." },
+        { "value": "mage", "text": "You try to find a pattern in their wording and search history to understand the 'vibe' they put out in the world, and why they might have targeted you." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q21_overdue_library_book",
+      "title": "You've just found a library book you checked out years ago, and it's long overdue.",
+      "choices": [
+        { "value": "warrior", "text": "You return the book immediately and pay the fine, as it is the right thing to do." },
+        { "value": "rogue", "text": "You leave the book in a park, hoping someone else will find it and return it for you." },
+        { "value": "mage", "text": "You look at the book and the library card, sensing a deep metaphysical connection between the two objects, and wonder why the universe kept them separate for so long." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q22_boring_meeting",
+      "title": "You're in a very boring work meeting that seems to be going nowhere.",
+      "choices": [
+        { "value": "warrior", "text": "You suggest a clear agenda for the rest of the meeting to get it back on track." },
+        { "value": "rogue", "text": "You discreetly pull out your phone and scroll through social media under the table." },
+        { "value": "mage", "text": "You find a pattern in the way people are speaking and try to predict the next word or phrase they will say." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q23_unsolicited_advice",
+      "title": "Someone gives you unsolicited advice on how to do your job.",
+      "choices": [
+        { "value": "warrior", "text": "You thank them for their input but firmly state that you have your own method that you are following." },
+        { "value": "rogue", "text": "You act as if you're listening, but you have no intention of changing your approach." },
+        { "value": "mage", "text": "You analyse their advice in terms of its theoretical framework, debating whether its underlying principles are sound or not." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q24_broken_remote",
+      "title": "Your television remote stops working for no apparent reason.",
+      "choices": [
+        { "value": "warrior", "text": "You replace the batteries and, if that doesn't work, you go out and buy a new remote." },
+        { "value": "rogue", "text": "You hide the remote and tell your family it's lost, so you have an excuse to get a new one." },
+        { "value": "mage", "text": "You open up the remote and examine the internal circuit board, hypothesising about a tiny electromagnetic anomaly." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q25_lost_wallet",
+      "title": "You've lost your wallet on your way home.",
+      "choices": [
+        { "value": "warrior", "text": "You immediately call your bank to cancel your cards and report it to the police." },
+        { "value": "rogue", "text": "You post a 'lost wallet' message on a local social media group, leaving out a detail so that only the real finder can claim it." },
+        { "value": "mage", "text": "You walk the path you took home, visualising the wallet's location and hoping to feel a 'pull' towards it." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q26_unexpected_guests",
+      "title": "Unexpected guests show up at your house right when you're about to leave.",
+      "choices": [
+        { "value": "warrior", "text": "You politely explain that you have to go and arrange a time to get together with them later." },
+        { "value": "rogue", "text": "You pretend you have an emergency phone call and slip away while they're distracted." },
+        { "value": "mage", "text": "You sit them down and have a conversation about the nature of time and destiny, and how their arrival was an inevitable cosmic event." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q27_conflicting_traffic_lights",
+      "title": "A traffic light at a major intersection is broken and everyone is confused about who has the right of way.",
+      "choices": [
+        { "value": "warrior", "text": "You follow the rules of the road as if it's a four-way stop sign, waiting for your turn." },
+        { "value": "rogue", "text": "You inch your car forward until you are a third of the way through the intersection and block a lane, forcing others to yield to you." },
+        { "value": "mage", "text": "You look at the flow of traffic, trying to understand the collective consciousness of the drivers, and then move in a way that is mathematically most likely to succeed." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q28_late_project",
+      "title": "You are working on a project with a tight deadline and it looks like you won't finish in time.",
+      "choices": [
+        { "value": "warrior", "text": "You pull an all-nighter to finish it on time, knowing that you committed to the deadline." },
+        { "value": "rogue", "text": "You intentionally submit a corrupted file so you can ask for an extension." },
+        { "value": "mage", "text": "You refactor the code to remove all non-essential features, making the project simpler but also theoretically more efficient." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q29_difficult_customer",
+      "title": "A customer is being unreasonable and yelling at you.",
+      "choices": [
+        { "value": "warrior", "text": "You remain calm and professional, following the company policy for dealing with difficult customers." },
+        { "value": "rogue", "text": "You subtly lead them to another colleague's desk, telling them that person is the 'specialist' in their issue." },
+        { "value": "mage", "text": "You listen to their words, but you are not truly hearing them. Instead, you are looking for the underlying logical fallacy in their argument." }
+      ]
+    },
+    {
+      "type": "radiogroup",
+      "name": "q30_long_email_chain",
+      "title": "An email chain at work is getting out of control with too many 'reply all' messages.",
+      "choices": [
+        { "value": "warrior", "text": "You start a new email to the group and clearly state that all further replies should be directed to a different thread or channel." },
+        { "value": "rogue", "text": "You reply-all with a message saying 'unsubscribe' to the entire group." },
+        { "value": "mage", "text": "You create a script that filters all emails from the thread and sends them directly to a 'junk' folder, creating a digital force field around your inbox." }
+      ]
+    }
+  ]
+}

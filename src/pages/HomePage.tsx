@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Pane } from '@gergling/ui-components';
 import Blog from '../features/blogs/components/Blog';
+import { PersonalityType } from '../features/surveys/components/PersonalityType';
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -35,6 +36,7 @@ const HomePage: React.FC = () => {
       </Paragraph>
       <Pane>What a pane in my ash.</Pane>
       <Blog />
+      <PersonalityType />
     </PageContainer>
   );
 };
