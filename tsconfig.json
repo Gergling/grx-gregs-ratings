@@ -18,12 +18,6 @@
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    /* Path aliases for local packages */
-    "paths": {
-      "@gergling/ui-components": ["../gds-gergling-design-system/ui-components/src/index.ts"]
-    }
-  },
-  "include": ["src"]
+    "noUnusedParameters": true
+  }
 }

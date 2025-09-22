@@ -2,16 +2,22 @@ import styled from '@emotion/styled';
 import { Route, Routes, Link } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import AboutPage from '../pages/AboutPage';
+import { AppHeader, AppThemeProvider } from '@gergling/ui-components';
 
-const Header = styled.header`
-  background-color: #002347;
-  color: white;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #0056a0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+// TODO: I hate it, but it works. Ideally it would just be imported by the package.
+import '@fontsource-variable/bodoni-moda-sc';
+import '@fontsource-variable/raleway';
+import '@fontsource-variable/raleway/wght-italic.css';
+
+const Header = styled(AppHeader)`
+  // background-color: #002347;
+  // color: white;
+  // padding: 1rem;
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: center;
+  // border-bottom: 2px solid #0056a0;
+  // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const Nav = styled.nav`
@@ -40,21 +46,19 @@ const MainContent = styled.main`
 
 const App: React.FC = () => {
   return (
-    <>
-      <Header>
-        <h1>Gregory, Michael & Davies</h1>
-        <Nav>
-          <StyledLink to="/">Home</StyledLink>
-          <StyledLink to="/about">About</StyledLink>
-        </Nav>
-      </Header>
+    <AppThemeProvider>
+      <Header title='Gregory, Michael & Davies'/>
+      <Nav>
+        <StyledLink to="/">Home</StyledLink>
+        <StyledLink to="/about">About</StyledLink>
+      </Nav>
       <MainContent>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
       </MainContent>
-    </>
+    </AppThemeProvider>
   );
 };
 
