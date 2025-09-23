@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "postinstall": "cd sanity-studio && npm i",
     "sanity": "cd sanity-studio && npm run dev",
     "sanity:typegen": "tsx scripts/create-sanity-schema-directory && cd sanity-studio && npm run typegen",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,7 +17,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@gergling/ui-components": "^0.1.10",
+    "@gergling/ui-components": "^0.1.11",
     "@sanity/client": "^7.11.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
