@@ -251,3 +251,31 @@ export type SanityAssetSourceData = {
 
 export type AllSanitySchemaTypes = BlockContent | Category | Post | Author | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ../src/features/blogs/components/Blog.tsx
+// Variable: postsQuery
+// Query: *[_type == "post"]  | order(publishedAt desc)  [0...2]  {    title,    slug,    mainImage{      asset->{        url      }    },    categories,    publishedAt  }
+export type PostsQueryResult = Array<{
+  title: string;
+  slug: Slug;
+  mainImage: {
+    asset: {
+      url: string | null;
+    } | null;
+  } | null;
+  categories: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "category";
+  }> | null;
+  publishedAt: string | null;
+}>;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    "*[_type == \"post\"]\n  | order(publishedAt desc)\n  [0...2]\n  {\n    title,\n    slug,\n    mainImage{\n      asset->{\n        url\n      }\n    },\n    categories,\n    publishedAt\n  }": PostsQueryResult;
+  }
+}

@@ -29,6 +29,7 @@ export default defineType({
       // TODO: Default?
       validation: rule => rule.required()
     }),
+    // TODO: Need more from the summary image.
     defineField({
       name: 'mainImage',
       title: 'Main image',
@@ -56,6 +57,7 @@ export default defineType({
     }),
   ],
 
+  // TODO: Use this in the query.
   preview: {
     select: {
       title: 'title',

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Pane } from '@gergling/ui-components';
-import Blog from '../features/blogs/components/Blog';
+import { FeaturedBlogs } from '../features/blogs/components/FeaturedBlogs';
 import { PersonalityType } from '../features/surveys/components/PersonalityType';
 
 const PageContainer = styled.div`
@@ -27,6 +27,7 @@ const Paragraph = styled.p`
 const HomePage: React.FC = () => {
   return (
     <PageContainer>
+      <FeaturedBlogs />
       <Title>Welcome to our Absurd Quantitative Applications</Title>
       <Paragraph>
         This is the home page of our esteemed, and entirely fictitious, consulting firm. Here you can find our expertly crafted, yet completely nonsensical, ratings and rankings.
@@ -35,7 +36,6 @@ const HomePage: React.FC = () => {
         Navigating to the 'About' page will reveal a brief, and equally absurd, description of our firm's mission and ethos.
       </Paragraph>
       <Pane>What a pane in my ash.</Pane>
-      <Blog />
       <PersonalityType />
     </PageContainer>
   );
