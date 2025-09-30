@@ -7,7 +7,7 @@ import { AppHeader, AppThemeProvider } from '@gergling/ui-components';
 import '@fontsource-variable/bodoni-moda-sc';
 import '@fontsource-variable/raleway';
 import '@fontsource-variable/raleway/wght-italic.css';
-import { getRoute } from '../routes';
+import { getRoutes } from '../routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const Header = styled(AppHeader)`
@@ -48,6 +48,7 @@ const MainContent = styled.main`
 const queryClient = new QueryClient();
 
 const App: React.FC = () => {
+  const routes = getRoutes();
   return (
     <AppThemeProvider>
       <QueryClientProvider client={queryClient}>
@@ -58,9 +59,7 @@ const App: React.FC = () => {
         </Nav>
         <MainContent>
           <Routes>
-            <Route {...getRoute('home')} />
-            <Route {...getRoute('blog')} />
-            {/* <Route path="/" element={<HomePage />} /> */}
+            {routes.map(({ props }) => <Route {...props} />)}
             <Route path="/about" element={<AboutPage />} />
           </Routes>
         </MainContent>

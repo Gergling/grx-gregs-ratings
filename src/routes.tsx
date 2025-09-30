@@ -1,5 +1,5 @@
 import { RouteProps } from "react-router-dom";
-import { BlogPage, HomePage } from "./pages";
+import { BlogListPage, BlogPage, HomePage } from "./pages";
 
 type RouteTemplate = {
   [key: string]: RouteProps;
@@ -13,6 +13,7 @@ const routes = {
   },
   blogs: {
     path: "/blogs",
+    element: <BlogListPage />,
   },
   blog: {
     path: "/blogs/:slug",
@@ -24,3 +25,12 @@ type AppRoutes = RouteValidation<typeof routes>;
 type RouteName = keyof AppRoutes;
 
 export const getRoute = (name: RouteName) => routes[name];
+export const getRoutes = () => Object
+  .entries(routes)
+  .map(([
+    key,
+    props
+  ]) => ({
+    key,
+    props,
+  }));
