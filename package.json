@@ -9,6 +9,7 @@
     "postinstall": "cd sanity-studio && npm i",
     "sanity": "cd sanity-studio && npm run dev",
     "sanity:typegen": "tsx scripts/create-sanity-schema-directory && cd sanity-studio && npm run typegen",
+    "knip": "knip",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -34,6 +35,7 @@
     "@types/react-dom": "^19.1.9",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react-swc": "^4.0.1",
+    "knip": "^5.64.1",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "vite": "^7.1.5"
