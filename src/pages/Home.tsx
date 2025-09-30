@@ -24,7 +24,7 @@ const Paragraph = styled.p`
   color: #333;
 `;
 
-const HomePage: React.FC = () => {
+export const HomePage: React.FC = () => {
   return (
     <PageContainer>
       <FeaturedBlogs />

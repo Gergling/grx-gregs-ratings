@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
 import { Route, Routes, Link } from 'react-router-dom';
-import HomePage from '../pages/HomePage';
-import AboutPage from '../pages/AboutPage';
+import AboutPage from '../pages/About';
 import { AppHeader, AppThemeProvider } from '@gergling/ui-components';
 
 // TODO: I hate it, but it works. Ideally it would just be imported by the package.
 import '@fontsource-variable/bodoni-moda-sc';
 import '@fontsource-variable/raleway';
 import '@fontsource-variable/raleway/wght-italic.css';
+import { getRoute } from '../routes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const Header = styled(AppHeader)`
   // background-color: #002347;
@@ -44,20 +45,26 @@ const MainContent = styled.main`
   min-height: 100vh;
 `;
 
+const queryClient = new QueryClient();
+
 const App: React.FC = () => {
   return (
     <AppThemeProvider>
-      <Header title='Gregory, Michael & Davies'/>
-      <Nav>
-        <StyledLink to="/">Home</StyledLink>
-        <StyledLink to="/about">About</StyledLink>
-      </Nav>
-      <MainContent>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-        </Routes>
-      </MainContent>
+      <QueryClientProvider client={queryClient}>
+        <Header title='Gregory, Michael & Davies'/>
+        <Nav>
+          <StyledLink to="/">Home</StyledLink>
+          <StyledLink to="/about">About</StyledLink>
+        </Nav>
+        <MainContent>
+          <Routes>
+            <Route {...getRoute('home')} />
+            <Route {...getRoute('blog')} />
+            {/* <Route path="/" element={<HomePage />} /> */}
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
+        </MainContent>
+      </QueryClientProvider>
     </AppThemeProvider>
   );
 };

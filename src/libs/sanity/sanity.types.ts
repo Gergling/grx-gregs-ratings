@@ -253,7 +253,7 @@ export type AllSanitySchemaTypes = BlockContent | Category | Post | Author | San
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../src/features/blogs/queries.ts
 // Variable: featuredArticlesQuery
-// Query: *[_type == "post"]  | order(publishedAt desc)  [0...3]  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt  }
+// Query: *[_type == "post"]  | order(publishedAt desc)  [0...3]  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt,  }
 export type FeaturedArticlesQueryResult = Array<{
   title: string;
   slug: string;
@@ -265,7 +265,7 @@ export type FeaturedArticlesQueryResult = Array<{
   publishedAt: string | null;
 }>;
 // Variable: singleArticleBySlugQuery
-// Query: *[_type == "post" && slug.current == $slug]  | order(publishedAt desc)  [0]  {    title,    "slug": slug.current,    "image": mainImage.asset->url,    categories[]->{description, title},    publishedAt,    body  }
+// Query: *[_type == "post" && slug.current == $slug]  | order(publishedAt desc)  [0]  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt,    body  }
 export type SingleArticleBySlugQueryResult = {
   title: string;
   slug: string;
@@ -278,7 +278,7 @@ export type SingleArticleBySlugQueryResult = {
   body: BlockContent | null;
 } | null;
 // Variable: listArticlesQuery
-// Query: *[_type == "post"]  | order(publishedAt desc)  {    title,    "slug": slug.current,    "image": mainImage.asset->url,    categories[]->{description, title},    publishedAt,  }
+// Query: *[_type == "post"]  | order(publishedAt desc)  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt,  }
 export type ListArticlesQueryResult = Array<{
   title: string;
   slug: string;
@@ -294,8 +294,8 @@ export type ListArticlesQueryResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n  *[_type == \"post\"]\n  | order(publishedAt desc)\n  [0...3]\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt\n\n  }\n": FeaturedArticlesQueryResult;
-    "\n  *[_type == \"post\" && slug.current == $slug]\n  | order(publishedAt desc)\n  [0]\n  {\n    title,\n    \"slug\": slug.current,\n    \"image\": mainImage.asset->url,\n    categories[]->{description, title},\n    publishedAt,\n    body\n  }\n": SingleArticleBySlugQueryResult;
-    "\n  *[_type == \"post\"]\n  | order(publishedAt desc)\n  {\n    title,\n    \"slug\": slug.current,\n    \"image\": mainImage.asset->url,\n    categories[]->{description, title},\n    publishedAt,\n  }\n": ListArticlesQueryResult;
+    "\n  *[_type == \"post\"]\n  | order(publishedAt desc)\n  [0...3]\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n  }\n": FeaturedArticlesQueryResult;
+    "\n  *[_type == \"post\" && slug.current == $slug]\n  | order(publishedAt desc)\n  [0]\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n    body\n  }\n": SingleArticleBySlugQueryResult;
+    "\n  *[_type == \"post\"]\n  | order(publishedAt desc)\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n  }\n": ListArticlesQueryResult;
   }
 }

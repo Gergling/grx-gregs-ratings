@@ -6,7 +6,7 @@ const baseArticleFields = `
   "slug": slug.current,
   "image": mainImage.asset->url,
   categories[]->{description, title},
-  publishedAt
+  publishedAt,
 `;
 
 const featuredArticlesQuery = defineQuery(`
@@ -26,11 +26,7 @@ const singleArticleBySlugQuery = defineQuery(`
   | order(publishedAt desc)
   [0]
   {
-    title,
-    "slug": slug.current,
-    "image": mainImage.asset->url,
-    categories[]->{description, title},
-    publishedAt,
+    ${baseArticleFields}
     body
   }
 `);
@@ -42,11 +38,7 @@ const listArticlesQuery = defineQuery(`
   *[_type == "post"]
   | order(publishedAt desc)
   {
-    title,
-    "slug": slug.current,
-    "image": mainImage.asset->url,
-    categories[]->{description, title},
-    publishedAt,
+    ${baseArticleFields}
   }
 `);
 

@@ -1,40 +1,33 @@
 import { BlogSummaryProps } from "@gergling/ui-components";
-import { FeaturedArticlesQueryResult } from "../../../libs/sanity";
+import {
+  FeaturedArticlesQueryResult,
+  ListArticlesQueryResult,
+  SingleArticleBySlugQueryResult
+} from "../../../libs/sanity";
 import { SingleArrayElement } from "../../../libs/sanity/generic.types";
+import { generatePath, NavigateFunction } from "react-router-dom";
 
-// This just generates "never" types for some reason.
-// Will need to come up with my own system. Probably can still create a
-// "base", but it will need to sit separately from the queries.
+export const articleTransformationFactory = <
+  T extends
+    | SingleArrayElement<FeaturedArticlesQueryResult>
+    | SingleArticleBySlugQueryResult
+    | SingleArrayElement<ListArticlesQueryResult>
+>(
+  navigate: NavigateFunction,
+  basePath: string
+) => (
+  props: T
+): BlogSummaryProps => {
+  if (!props) return { media: {}, onClick: () => {}, subheader: '', title: 'No blog here' };
 
-// This can go in "type-constants.ts".
-// const baseArticleStringProps = ['title', 'slug', 'image', 'publishedAt'] as const;
-// const baseArticleCategoryProps = ['description', 'title'] as const;
+  const { image, slug, title } = props;
+  const onClick = () => navigate(generatePath(basePath, { slug }));
 
-// This can go in "types.ts".
-// type BaseArticleStringProps = typeof baseArticleStringProps[number];
-// type BaseArticleCategoryProps = typeof baseArticleCategoryProps[number];
-// type BaseArticleCategory = Record<BaseArticleCategoryProps, string | null>;
-// type BaseArticle = Record<BaseArticleStringProps, string> & {
-//   categories: BaseArticleCategory[];
-// };
-  // categories[]->{description, title},
-
-// type BaseArticleOverride = Record<BaseArticleStringProps, string | null> & {
-//   categories: BaseArticleCategory[] | null;
-// };
-
-// TODO: Data could come back empty because we can't control the backend from here.
-// How to handle.
-export const transformArticle = ({
-  image,
-  slug,
-  title
-}: SingleArrayElement<FeaturedArticlesQueryResult>): BlogSummaryProps => {
   return {
     media: {
       image: image || undefined,
     },
-    slug,
+    onClick,
     subheader: '',
     title,
   };

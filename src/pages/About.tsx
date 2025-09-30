@@ -21,7 +21,7 @@ const Paragraph = styled.p`
   color: #333;
 `;
 
-const AboutPage: React.FC = () => {
+export const AboutPage: React.FC = () => {
   return (
     <PageContainer>
       <Title>About Our Firm</Title>
