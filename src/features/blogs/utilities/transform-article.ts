@@ -17,8 +17,14 @@ export const articleTransformationFactory = <
   basePath: string
 ) => (
   props: T
-): BlogSummaryProps => {
-  if (!props) return { media: {}, onClick: () => {}, subheader: '', title: 'No blog here' };
+): BlogSummaryProps & { slug: string; } => {
+  if (!props) return {
+    media: {},
+    onClick: () => {},
+    slug: '',
+    subheader: '',
+    title: 'No blog here'
+  };
 
   const { image, slug, title } = props;
   const onClick = () => navigate(generatePath(basePath, { slug }));
@@ -28,6 +34,7 @@ export const articleTransformationFactory = <
       image: image || undefined,
     },
     onClick,
+    slug,
     subheader: '',
     title,
   };
