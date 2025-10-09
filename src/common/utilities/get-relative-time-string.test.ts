@@ -25,7 +25,7 @@ describe('getRelativeTimeString', () => {
   it('should handle plural units correctly', () => {
     expect(getRelativeTimeString(Temporal.Duration.from({ years: 2 }))).toBe('2 years ago');
     expect(getRelativeTimeString(Temporal.Duration.from({ months: 5 }))).toBe('5 months ago');
-    expect(getRelativeTimeString(Temporal.Duration.from({ days: 10 }))).toBe('10 days ago');
+    expect(getRelativeTimeString(Temporal.Duration.from({ days: 10 }))).toBe('1 week ago');
     expect(getRelativeTimeString(Temporal.Duration.from({ hours: 12 }))).toBe('12 hours ago');
     expect(getRelativeTimeString(Temporal.Duration.from({ minutes: 30 }))).toBe('30 minutes ago');
     expect(getRelativeTimeString(Temporal.Duration.from({ seconds: 45 }))).toBe('45 seconds ago');
@@ -50,7 +50,7 @@ describe('getRelativeTimeString', () => {
       days: 15,
       hours: 10,
     });
-    expect(getRelativeTimeString(durationWithDays)).toBe('15 days ago');
+    expect(getRelativeTimeString(durationWithDays)).toBe('2 weeks ago');
 
     const durationWithMinutes = Temporal.Duration.from({
       minutes: 5,
