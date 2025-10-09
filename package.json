@@ -10,7 +10,7 @@
     "sanity": "cd sanity-studio && npm run dev",
     "sanity:typegen": "tsx scripts/create-sanity-schema-directory && cd sanity-studio && npm run typegen",
     "knip": "knip",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "author": "",
   "license": "ISC",
@@ -39,6 +39,7 @@
     "knip": "^5.64.1",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
-    "vite": "^7.1.5"
+    "vite": "^7.1.5",
+    "vitest": "^3.2.4"
   }
 }
