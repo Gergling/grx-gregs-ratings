@@ -58,4 +58,21 @@ describe('getRelativeTimeString', () => {
     });
     expect(getRelativeTimeString(durationWithMinutes)).toBe('5 minutes ago');
   });
+
+  describe('when handling weeks', () => {
+    it('should convert 7 days to "1 week ago"', () => {
+      const duration = Temporal.Duration.from({ days: 7 });
+      expect(getRelativeTimeString(duration)).toBe('1 week ago');
+    });
+
+    it('should convert more than 7 days to weeks (plural)', () => {
+      const duration = Temporal.Duration.from({ days: 14 });
+      expect(getRelativeTimeString(duration)).toBe('2 weeks ago');
+    });
+
+    it('should floor the number of weeks for durations between multiples of 7', () => {
+      const duration = Temporal.Duration.from({ days: 13 });
+      expect(getRelativeTimeString(duration)).toBe('1 week ago');
+    });
+  });
 });
