@@ -1,5 +1,5 @@
 import { AllBlogs } from "../features/blogs";
-import { PageContainer } from "./Styles";
+import { PageContainer } from "../common/components/styles";
 
 export const BlogListPage: React.FC = () => {
   return (

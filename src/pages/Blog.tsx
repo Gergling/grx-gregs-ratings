@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { SingleBlog } from "../features/blogs";
-import { PageContainer } from "./Styles";
+import { PageContainer } from "../common/components/styles";
 
 export const BlogPage: React.FC = () => {
   const { slug } = useParams();
