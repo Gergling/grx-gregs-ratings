@@ -1,5 +1,6 @@
 import { Typography } from "@gergling/ui-components";
-import { Box, Card, CardHeader, CardMedia } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Box, Card, CardHeader, CardMedia, CircularProgress, Fade } from "@mui/material";
 import imageAngry from "../../../assets/images/team-greg-angry.jpg";
 import imageDisgusted from "../../../assets/images/team-greg-disgusted.jpg";
 import imageFearful from "../../../assets/images/team-greg-fearful.jpg";
@@ -45,13 +46,39 @@ const members: MemberProps[] = [
 ];
 
 const MemberCard = ({ image, label }: MemberProps) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = image;
+    img.onload = () => setIsLoaded(true);
+    // TODO: Could do with a refactor TBH.
+    // img.onerror = () => setIsLoaded(true);
+  }, [image]);
+
   return (
     <Card sx={{ width: 200 }}>
-      <CardMedia
-        sx={{ height: 140 }}
-        image={image}
-        title={label}
-      />
+      <Box sx={{ height: 140, position: 'relative' }}>
+        {!isLoaded && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress size={30} />
+          </Box>
+        )}
+        <Fade in={isLoaded}>
+          <CardMedia sx={{ height: 140 }} image={image} title={label} />
+        </Fade>
+      </Box>
       <CardHeader
         slotProps={{
           title: {
