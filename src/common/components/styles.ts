@@ -20,3 +20,11 @@ export const Paragraph = styled.p`
   line-height: 1.6;
   color: #333;
 `;
+
+export const StyledPanelContainer = styled.div`
+  margin-bottom: 2rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
