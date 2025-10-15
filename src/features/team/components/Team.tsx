@@ -103,6 +103,12 @@ export const Team = () => {
         style={{ textAlign: "center", fontWeight: "bold" }}
         variant="h3"
       >Meet the Team</Typography>
+      <Typography
+        gutterBottom
+        variant="body1"
+      >
+        We at Gregory, Michael & Davies pride ourselves on being at least one real person* and the voices in their head.
+      </Typography>
       <Box
         sx={{
           display: 'flex',
@@ -116,6 +122,12 @@ export const Team = () => {
           <MemberCard key={member.label} {...member} />
         ))}
       </Box>
+      <Typography
+        gutterBottom
+        variant="body2"
+      >
+        *If you or a loved one is a real person, please seek assistance from a medical professional.
+      </Typography>
     </>
   );
 };
