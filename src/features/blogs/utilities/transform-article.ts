@@ -26,7 +26,7 @@ export const articleTransformationFactory = <
     title: 'No blog here'
   };
 
-  const { image, slug, title } = props;
+  const { image, publishedAt, slug, title } = props;
   const onClick = () => navigate(generatePath(basePath, { slug }));
 
   return {
@@ -35,7 +35,7 @@ export const articleTransformationFactory = <
     },
     onClick,
     slug,
-    subheader: '',
+    subheader: publishedAt,
     title,
   };
 };

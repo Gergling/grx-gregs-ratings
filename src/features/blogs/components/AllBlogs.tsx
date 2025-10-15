@@ -1,7 +1,47 @@
 import { fetchListArticles } from "../queries";
-import { generatePath } from "react-router-dom";
-import { getRoute } from "../../../routes";
 import { useBlogListQuery } from "../hooks";
+import { BlogSummaryProps } from "@gergling/ui-components";
+import { Box, Card, CardHeader, CardMedia } from "@mui/material";
+import { ImageLoader } from "../../../common/components/ImageLoader";
+import { StyledBlogListContainer, StyledBlogListItemCardActionArea } from "./AllBlogs.style";
+import { ReadablePublishingTime } from "./ReadablePublishingTime";
+
+const BlogItemCard = ({
+  onClick,
+  media: { image },
+  subheader,
+  title,
+}: BlogSummaryProps) => {
+  return (
+    <Card sx={{ width: '23rem' }}>
+      <StyledBlogListItemCardActionArea onClick={onClick}>
+        <Box sx={{ position: 'relative' }}>
+          <ImageLoader image={image}>
+            <CardMedia
+              component="img"
+              image={image}
+              sx={{ height: 100, width: 100 }}
+              title={title as string}
+            />
+          </ImageLoader>
+        </Box>
+        <CardHeader
+          slotProps={{
+            title: {
+              sx: {
+                fontSize: '1rem',
+                fontWeight: '1000',
+              },
+              variant: 'h6',
+            }
+          }}
+          title={title}
+          subheader={<ReadablePublishingTime publishedAt={subheader as string} />}
+        />
+      </StyledBlogListItemCardActionArea>
+    </Card>
+  )
+}
 
 export const AllBlogs = () => {
   const {
@@ -14,14 +54,7 @@ export const AllBlogs = () => {
   if (error) return <>Error: {error.message}</>;
   if (!data) return <>No articles found.</>;
 
-  return <ul>
-    {data.map(({
-      slug,
-      title
-    }) => <li key={slug}>
-      <a href={generatePath(getRoute('blog').path, { slug })}>
-        {title}
-      </a>
-    </li>)}
-  </ul>;
+  return <StyledBlogListContainer>
+    {data.map((blog) => <BlogItemCard key={blog.slug} {...blog} />)}
+  </StyledBlogListContainer>;
 };

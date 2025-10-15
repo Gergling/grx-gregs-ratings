@@ -16,7 +16,7 @@ export const FeaturedBlogs = () => {
 
   return (
     <PaneContainer>
-      <BlogList articles={data} />
+      <BlogList articles={data.map(({ subheader, ...props }) => ({ ...props, subheader: '' }))} />
     </PaneContainer>
   );
 };
