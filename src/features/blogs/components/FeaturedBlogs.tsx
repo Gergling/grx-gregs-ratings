@@ -1,6 +1,7 @@
 import { BlogList } from '@gergling/ui-components';
 import { fetchFeaturedArticles } from '../queries';
 import { useBlogListQuery } from '../hooks';
+import { PaneContainer } from '../../../common/components/PaneContainer';
 
 export const FeaturedBlogs = () => {
   const {
@@ -14,8 +15,8 @@ export const FeaturedBlogs = () => {
   if (!data) return <>No articles found.</>;
 
   return (
-    <div>
+    <PaneContainer>
       <BlogList articles={data} />
-    </div>
+    </PaneContainer>
   );
 };
