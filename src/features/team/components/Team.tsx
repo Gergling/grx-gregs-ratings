@@ -88,8 +88,9 @@ export const Team = () => {
           display: 'flex',
           gap: 2,
           flexWrap: 'wrap',
-          justifyContent: 'space-evenly',
+          justifyContent: 'center',
           alignItems: 'center',
+          marginBottom: '1rem',
         }}
       >
         {members.map((member) => (
