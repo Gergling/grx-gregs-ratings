@@ -2,6 +2,7 @@ import { PortableText } from "@portabletext/react";
 import { useBlogItemQuery } from "../hooks";
 import { BlockContent } from "../../../libs/sanity";
 import { ReadablePublishingTime } from "./ReadablePublishingTime";
+import { Typography } from "@mui/material";
 
 type SingleBlogProps = { slug: string; };
 
@@ -25,11 +26,11 @@ const RenderBlog = ({
 
   return (
     <>
-      {title}
-      <span> </span>
+      <Typography variant="h4" sx={{ textAlign: 'center' }}>{title}</Typography>
+      <div style={{ textAlign: 'center' }}>
+        {image && <img src={image} alt={title} height="200" />}
+      </div>
       <ReadablePublishingTime publishedAt={publishedAt} />
-      ({publishedAt})
-      {image && <img src={image} alt={title} />}
       <PortableText value={body} />
     </>
   );

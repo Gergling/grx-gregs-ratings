@@ -15,12 +15,15 @@ const BlogItemCard = ({
   return (
     <Card sx={{ width: '23rem' }}>
       <StyledBlogListItemCardActionArea onClick={onClick}>
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{
+          position: 'relative',
+          width: 100
+        }}>
           <ImageLoader image={image}>
             <CardMedia
               component="img"
               image={image}
-              sx={{ height: 100, width: 100 }}
+              sx={{ height: 100 }}
               title={title as string}
             />
           </ImageLoader>
