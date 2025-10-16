@@ -30,6 +30,21 @@ export default defineType({
       // TODO: Default?
       validation: rule => rule.required()
     }),
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Idea', value: 'idea' },
+          { title: 'Upcoming', value: 'upcoming' },
+          { title: 'Ready', value: 'ready' },
+        ],
+        layout: 'dropdown',
+      },
+      initialValue: 'idea',
+      validation: Rule => Rule.required(),
+    }),
     // TODO: Need more from the summary image.
     defineField({
       name: 'mainImage',
@@ -49,7 +64,7 @@ export default defineType({
       name: 'publishedAt',
       title: 'Published at',
       type: 'datetime',
-      // TODO: Automate?
+      hidden: ({ document }) => document?.status !== 'ready',
     }),
     defineField({
       name: 'body',

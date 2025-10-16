@@ -2,6 +2,7 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
+import { resolveDocumentActions } from './utilities/resolve-document-actions'
 
 export default defineConfig({
   name: 'default',
@@ -11,6 +12,10 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [structureTool(), visionTool()],
+
+  document: {
+    actions: resolveDocumentActions,
+  },
 
   schema: {
     types: schemaTypes,
