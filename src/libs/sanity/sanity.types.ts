@@ -68,6 +68,7 @@ export type Post = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "author";
   };
+  status: "idea" | "upcoming" | "ready";
   mainImage?: {
     asset?: {
       _ref: string;
@@ -289,6 +290,23 @@ export type ListArticlesQueryResult = Array<{
   }> | null;
   publishedAt: string | null;
 }>;
+// Variable: articleProgressStatusQuery
+// Query: {    "ideaCount": count(*[_type == "post" && status == "idea"]),    "upcomingList": *[      _type == "post" &&      status == "upcoming"    ] | order(_createdAt asc) {      title,      "url": slug.current,    },    "readyList": *[      _type == "post" &&      status == "ready" &&      string::startsWith(_id, "drafts.")    ] | order(publishedAt desc) {      title,      "url": slug.current    },    "latestPublishedList": *[      _type == "post" &&      status == "ready" &&      !string::startsWith(_id, "drafts.")    ] | order(publishedAt desc)[0...3] {      title,      "url": slug.current    }  }
+export type ArticleProgressStatusQueryResult = {
+  ideaCount: number;
+  upcomingList: Array<{
+    title: string;
+    url: string;
+  }>;
+  readyList: Array<{
+    title: string;
+    url: string;
+  }>;
+  latestPublishedList: Array<{
+    title: string;
+    url: string;
+  }>;
+};
 
 // Query TypeMap
 import "@sanity/client";
@@ -297,5 +315,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"post\"]\n  | order(publishedAt desc)\n  [0...3]\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n  }\n": FeaturedArticlesQueryResult;
     "\n  *[_type == \"post\" && slug.current == $slug]\n  | order(publishedAt desc)\n  [0]\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n    body\n  }\n": SingleArticleBySlugQueryResult;
     "\n  *[_type == \"post\"]\n  | order(publishedAt desc)\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n  }\n": ListArticlesQueryResult;
+    "\n  {\n    \"ideaCount\": count(*[_type == \"post\" && status == \"idea\"]),\n    \"upcomingList\": *[\n      _type == \"post\" &&\n      status == \"upcoming\"\n    ] | order(_createdAt asc) {\n      title,\n      \"url\": slug.current,\n    },\n    \"readyList\": *[\n      _type == \"post\" &&\n      status == \"ready\" &&\n      string::startsWith(_id, \"drafts.\")\n    ] | order(publishedAt desc) {\n      title,\n      \"url\": slug.current\n    },\n    \"latestPublishedList\": *[\n      _type == \"post\" &&\n      status == \"ready\" &&\n      !string::startsWith(_id, \"drafts.\")\n    ] | order(publishedAt desc)[0...3] {\n      title,\n      \"url\": slug.current\n    }\n  }\n": ArticleProgressStatusQueryResult;
   }
 }

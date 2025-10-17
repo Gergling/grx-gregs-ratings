@@ -44,3 +44,35 @@ const listArticlesQuery = defineQuery(`
 
 export const fetchListArticles = () =>
   sanityClientFetch(listArticlesQuery);
+
+const articleProgressStatusQuery = defineQuery(`
+  {
+    "ideaCount": count(*[_type == "post" && status == "idea"]),
+    "upcomingList": *[
+      _type == "post" &&
+      status == "upcoming"
+    ] | order(_createdAt asc) {
+      title,
+      "url": slug.current,
+    },
+    "readyList": *[
+      _type == "post" &&
+      status == "ready" &&
+      string::startsWith(_id, "drafts.")
+    ] | order(publishedAt desc) {
+      title,
+      "url": slug.current
+    },
+    "latestPublishedList": *[
+      _type == "post" &&
+      status == "ready" &&
+      !string::startsWith(_id, "drafts.")
+    ] | order(publishedAt desc)[0...3] {
+      title,
+      "url": slug.current
+    }
+  }
+`);
+
+export const fetchArticleProgressStatus = () =>
+  sanityClientFetch(articleProgressStatusQuery);
