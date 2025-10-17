@@ -14,6 +14,10 @@ export const FACETOMETRICS: MetricChipProps[] = [
     label: 'People Per Capita (PPC)',
     value: '100%',
   },
+  {
+    label: 'Current Value Of Pi (Pi)',
+    value: `${Math.PI.toString()}...`,
+  },
 ].map(getDefaultMetricChipProps);
 
 export const SEASONAL_FACETOMETRIC_NAMES = [
