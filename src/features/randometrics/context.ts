@@ -4,14 +4,32 @@ import { create } from "zustand";
 import { MetricPopProps, RANDOMETRIC_CONFIG, Randometric, RandometricConfigKey } from "./config";
 import { getMetricConfig } from "./utilities/get-metric-config";
 import { getFlattenedRandometricConfig } from "./utilities/get-flattened-config";
-import { PrimaryLabelChipProps } from "../../common/components/PrimaryLabelChip";
+import { PrimaryLabelChipProps } from "../elastic-response/types";
+import { BlogProgressReport } from "../blogs";
+
+type ValueFn = (report: BlogProgressReport) => string;
+const defineMetricConfig = <T extends Partial<Record<RandometricConfigKey, ValueFn>>>(
+  config: T
+) => config;
+const blogMetricConfig = defineMetricConfig({
+  blogIdeas: (report) => report.ideas,
+  blogPublishProjected: (report) => report.nextProjectedPublishDate,
+  blogPublishedLast: (report) => report.lastPublished,
+  blogUpcoming: (report) => report.upcoming?.title,
+});
+
+type BlogMetricKey = keyof typeof blogMetricConfig;
 
 const getRandometricNames = (randometrics: Randometric[]) => randometrics.map(({ name }) => name);
+
+const staticRandometrics = getFlattenedRandometricConfig(RANDOMETRIC_CONFIG);
+const staticRemaining = getRandometricNames(staticRandometrics);
 
 const metricStore = create<{
   randometrics: Randometric[];
   remaining: RandometricConfigKey[];
-  initialize: (seasonalChip: PrimaryLabelChipProps, mvpChip: PrimaryLabelChipProps) => void;
+  setBlogProgress: (blogProgress: BlogProgressReport) => void;
+  setDevProgress: (devChip: PrimaryLabelChipProps) => void;
   pop: (props: MetricPopProps) => Randometric | undefined;
   reset: () => void;
 }>((set, get) => {
@@ -20,16 +38,28 @@ const metricStore = create<{
     set({ remaining: getRandometricNames(randometrics) });
   };
   return {
-    randometrics: [],
-    remaining: [],
-    initialize: (seasonalChip, mvpChip) => {
-      const randometrics = getFlattenedRandometricConfig(
-        RANDOMETRIC_CONFIG,
-        seasonalChip,
-        mvpChip
-      );
-      const remaining = getRandometricNames(randometrics);
-      set({ randometrics, remaining });
+    // randometrics: [],
+    // remaining: [],
+    randometrics: staticRandometrics,
+    remaining: staticRemaining,
+    setBlogProgress: (blogProgressReport) => {
+      set((state) => ({
+        randometrics: state.randometrics.map((metric) => {
+          if (metric.name in blogMetricConfig) {
+            const value = blogMetricConfig[metric.name as BlogMetricKey](blogProgressReport)
+            if (value !== metric.value) return { ...metric, value };
+          }
+          return metric;
+        }),
+      }));
+    },
+    setDevProgress: (devChip) => {
+      set((state) => ({
+        randometrics: state.randometrics.map((metric) => {
+          if (metric.name === 'dev') return { ...metric, value: devChip.value };
+          return metric;
+        }),
+      }));
     },
     pop: (props) => {
       const { randometrics } = get();

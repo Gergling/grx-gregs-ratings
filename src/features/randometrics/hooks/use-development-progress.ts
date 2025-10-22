@@ -2,7 +2,7 @@ import { MetricChip } from "@gergling/ui-components";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { TWELVE_HOURS_IN_MS } from "../../../common/constants";
-import { PrimaryLabelChipProps } from "../../../common/components/PrimaryLabelChip";
+import { PrimaryLabelChipProps } from "../../elastic-response/types";
 
 const getLabel = (title: string = 'Development') => `${title} Progress (${title.charAt(0)}PX)`;
 
