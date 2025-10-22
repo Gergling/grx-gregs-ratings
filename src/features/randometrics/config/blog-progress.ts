@@ -15,7 +15,7 @@ export const BLOG_PROGRESS_METRICS = {
     configs: [
       {
         grow: { value: 0 },
-        size: { height: 4 },
+        size: { width: 2, height: 1 },
       },
     ],
   },

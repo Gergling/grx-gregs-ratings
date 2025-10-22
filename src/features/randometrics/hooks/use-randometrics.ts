@@ -4,6 +4,7 @@ import { useBlogProgress } from "../../blogs";
 import { useRandometricsContext } from "../context";
 import { MetricPopProps } from "../config";
 import { PrimaryLabelChipProps } from "../../elastic-response/types";
+import { getEffectiveSizeOffset } from "../utilities/get-effective-size-offset";
 
 export const useRandometrics = () => {
   const {
@@ -17,16 +18,23 @@ export const useRandometrics = () => {
   const popMetric = useCallback(
     (props: MetricPopProps): PrimaryLabelChipProps => {
       const metric = pop(props);
-      const { height, width } = props;
-      if (!metric) 
+      const { height: requestedHeight, width: requestedWidth } = props;
+      if (!metric) {
+        const horizontal = requestedHeight === 1;
+        const offset = getEffectiveSizeOffset(horizontal);
+        const height = requestedHeight === undefined ? 1 : requestedHeight - offset.height;
+        const width = requestedWidth === undefined ? 1 : requestedWidth - offset.width;
         return {
-        label: 'Crows',
-        size: {
-          height,
-          width,
-        },
-        value: '3',
-      };
+          label: 'Crows',
+          grow: { value: 0 },
+          horizontal,
+          size: {
+            height,
+            width,
+          },
+          value: '3',
+        };
+      }
 
       return {
         ...metric.props,

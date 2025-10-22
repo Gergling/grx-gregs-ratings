@@ -22,6 +22,11 @@ export const FACETOMETRICS = {
       {
         size: { width: 2 },
       },
+      {
+        grow: { value: 0 },
+        horizontal: true,
+        size: { width: 3 },
+      },
     ],
     label: 'People Per Capita (PPC)',
     value: '100%',
@@ -35,4 +40,13 @@ export const FACETOMETRICS = {
     label: 'Current Value Of Pi (Pi)',
     value: `${Math.PI.toString()}...`,
   },
+  wsv: {
+    configs: [
+      {
+        size: { width: 1, height: 2 },
+      },
+    ],
+    label: 'Words Stacked Erect (WSE)',
+    value: '3',
+  }
 };

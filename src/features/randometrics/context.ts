@@ -38,8 +38,6 @@ const metricStore = create<{
     set({ remaining: getRandometricNames(randometrics) });
   };
   return {
-    // randometrics: [],
-    // remaining: [],
     randometrics: staticRandometrics,
     remaining: staticRemaining,
     setBlogProgress: (blogProgressReport) => {
