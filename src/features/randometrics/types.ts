@@ -1,5 +1,5 @@
 import { MetricChip } from "@gergling/ui-components";
-import { PrimaryLabelChipProps } from "../../common/components/PrimaryLabelChip";
+import { PrimaryLabelChipProps } from "../elastic-response/types";
 
 export type MetricChipProps = Parameters<typeof MetricChip>[0];
 

@@ -1,14 +1,7 @@
-import { PropsWithChildren, useMemo } from "react";
+import { useMemo } from "react";
 import { PrimaryBorder } from "../../../common/components/PrimaryBorder";
 import { getRem } from "../utilities/rem-cell";
-
-export type BorderCellProps = PropsWithChildren & {
-  size?: {
-    width?: number;
-    height?: number;
-  };
-  style?: React.CSSProperties;
-};
+import { BorderCellProps } from "../types";
 
 export const BorderCell = ({
   children,

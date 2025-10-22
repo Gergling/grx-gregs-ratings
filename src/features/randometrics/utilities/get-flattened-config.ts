@@ -1,4 +1,4 @@
-import { PrimaryLabelChipProps } from "../../../common/components/PrimaryLabelChip";
+import { PrimaryLabelChipProps } from "../../elastic-response/types";
 import { Randometric, RandometricConfig, RandometricConfigKey } from "../config";
 
 type RandometricCore = Pick<Randometric, 'name' | 'priority'>;

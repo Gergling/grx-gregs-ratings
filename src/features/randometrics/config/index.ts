@@ -1,51 +1,11 @@
-import { PrimaryLabelChipProps } from "../../common/components/PrimaryLabelChip";
-import { SEASONAL_FACETOMETRIC } from "./config.utilities";
-import { FACETOMETRICS } from "./constants";
-import { RandometricConfigValidation } from "./types";
-
-const blogProgress = {
-  blogIdeas: {
-    priority: 1,
-    label: 'Blog Ideas',
-    configs: [
-      {
-        horizontal: true,
-        grow: { value: 0 },
-      },
-    ],
-  },
-  blogPublishProjected: {
-    priority: 1,
-    label: 'Next Projected Publishing Date',
-    configs: [
-      {
-        grow: { value: 0 },
-        size: { height: 4 },
-      },
-    ],
-  },
-  blogPublishedLast: {
-    priority: 1,
-    label: 'Last Blog Published',
-    configs: [
-      {
-        size: { width: 2 },
-      }
-    ],
-  },
-  blogUpcoming: {
-    priority: 1,
-    label: 'Upcoming Blog Title',
-    configs: [
-      {
-        size: { width: 5 },
-      }
-    ]
-  },
-};
+import { PrimaryLabelChipProps } from "../../elastic-response/types";
+import { RandometricConfigValidation } from "../types";
+import { BLOG_PROGRESS_METRICS } from "./blog-progress";
+import { FACETOMETRICS } from "./facetometrics";
+import { SEASONAL_FACETOMETRIC } from "./seasonal-facetometrics";
 
 export const RANDOMETRIC_CONFIG = {
-  ...blogProgress,
+  ...BLOG_PROGRESS_METRICS,
   seasonal: SEASONAL_FACETOMETRIC,
   ...FACETOMETRICS,
   dev: {
