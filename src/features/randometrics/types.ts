@@ -1,3 +1,17 @@
 import { MetricChip } from "@gergling/ui-components";
+import { PrimaryLabelChipProps } from "../../common/components/PrimaryLabelChip";
 
 export type MetricChipProps = Parameters<typeof MetricChip>[0];
+
+export type RandometricConfigValidationProps = {
+  configs: Pick<PrimaryLabelChipProps, 'grow' | 'horizontal' | 'size'>[];
+  label: PrimaryLabelChipProps['label'];
+  priority?: number;
+  value?: PrimaryLabelChipProps['value'];
+};
+
+export type RandometricConfigTemplate = {
+  [K: string]: RandometricConfigValidationProps;
+};
+
+export type RandometricConfigValidation<T extends RandometricConfigTemplate> = T;
