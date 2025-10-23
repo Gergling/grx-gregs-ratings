@@ -194,7 +194,7 @@ export const FACETOMETRICS = {
     label: 'You Aren\'t Gonna Need It (YAG)',
     value: 'Needed',
   },
-ok: {
+  ok: {
     configs: [
       {
         size: { width: 3, height: 1 },
