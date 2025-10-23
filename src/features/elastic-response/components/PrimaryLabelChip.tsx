@@ -38,7 +38,7 @@ export const PrimaryLabelChip = ({
         style={{
           alignItems: 'center',
           display: 'flex',
-          justifyContent: horizontal ? 'right' : 'center',
+          justifyContent: 'center',
           flex: labelGrow,
           textAlign: 'center',
         }}
@@ -50,7 +50,7 @@ export const PrimaryLabelChip = ({
         label={<Typography variant="body1">{value}</Typography>}
         sx={{
           display: 'flex',
-          justifyContent: horizontal ? 'left' : 'center',
+          justifyContent: 'center',
           flex: valueGrow,
           borderRadius: '0.5rem',
           height: '100%',
