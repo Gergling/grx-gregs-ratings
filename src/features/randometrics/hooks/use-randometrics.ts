@@ -5,15 +5,18 @@ import { useRandometricsContext } from "../context";
 import { MetricPopProps } from "../config";
 import { PrimaryLabelChipProps } from "../../elastic-response/types";
 import { getEffectiveSizeOffset } from "../utilities/get-effective-size-offset";
+import { useElasticResponse } from "../../elastic-response";
 
 export const useRandometrics = () => {
   const {
     pop,
     setBlogProgress,
     setDevProgress,
+    setSizeMetric,
   } = useRandometricsContext();
   const progress = useBlogProgress();
   const dev = useRandometricDevelopmentProgress();
+  const { size } = useElasticResponse();
 
   const popMetric = useCallback(
     (props: MetricPopProps): PrimaryLabelChipProps => {
@@ -46,10 +49,13 @@ export const useRandometrics = () => {
 
   useEffect(() => {
     setDevProgress(dev);
-  }, [dev]);
+  }, [dev, setDevProgress]);
   useEffect(() => {
     setBlogProgress(progress);
-  }, [progress]);
+  }, [progress, setBlogProgress]);
+  useEffect(() => {
+    setSizeMetric(size);
+  }, [size, setSizeMetric]);
 
   return {
     popMetric,

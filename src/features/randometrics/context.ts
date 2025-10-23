@@ -30,6 +30,7 @@ const metricStore = create<{
   remaining: RandometricConfigKey[];
   setBlogProgress: (blogProgress: BlogProgressReport) => void;
   setDevProgress: (devChip: PrimaryLabelChipProps) => void;
+  setSizeMetric: (size: number) => void;
   pop: (props: MetricPopProps) => Randometric | undefined;
   reset: () => void;
 }>((set, get) => {
@@ -55,6 +56,14 @@ const metricStore = create<{
       set((state) => ({
         randometrics: state.randometrics.map((metric) => {
           if (metric.name === 'dev') return { ...metric, value: devChip.value };
+          return metric;
+        }),
+      }));
+    },
+    setSizeMetric: (value) => {
+      set((state) => ({
+        randometrics: state.randometrics.map((metric) => {
+          if (metric.name === 'sos') return { ...metric, value };
           return metric;
         }),
       }));
