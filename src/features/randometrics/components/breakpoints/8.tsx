@@ -1,8 +1,8 @@
 import { BorderCellContainer, ElasticResponseItem } from "../../../elastic-response";
 import { Randometric } from "../Randometric";
 
-export const Randometric7 = () => (
-  <ElasticResponseItem breakpoint={7}>
+export const Randometric8 = () => (
+  <ElasticResponseItem breakpoint={8}>
     <BorderCellContainer>
       <BorderCellContainer variant="row">
         <BorderCellContainer>
@@ -14,27 +14,25 @@ export const Randometric7 = () => (
           />
         </BorderCellContainer>
         <BorderCellContainer>
-          <BorderCellContainer variant="row">
-            <Randometric
-              name='blogPublishProjected'
-            />
-            <Randometric
-              width={1}
-              height={2}
-            />
-          </BorderCellContainer>
           <Randometric
-            width={3}
+            name='blogPublishProjected'
+          />
+          <Randometric
+            width={2}
             height={1}
           />
         </BorderCellContainer>
         <BorderCellContainer>
+          <Randometric
+            width={2}
+            height={3}
+          />
         </BorderCellContainer>
       </BorderCellContainer>
       <BorderCellContainer>
         <Randometric
           name="blogUpcoming"
-          width={5}
+          width={6}
           height={2}
         />
       </BorderCellContainer>
