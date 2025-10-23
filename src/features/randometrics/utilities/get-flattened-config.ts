@@ -17,7 +17,6 @@ export const getFlattenedRandometricConfig = (
   ) => {
     const priority = ('priority' in metric) ? metric.priority || 0 : 0;
     const value = ('value' in metric) ? metric.value : '';
-    console.log('flatten', label, configs)
     return [
       ...randometrics,
       ...configs.map((props) => ({

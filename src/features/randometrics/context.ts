@@ -46,7 +46,7 @@ const metricStore = create<{
         randometrics: state.randometrics.map((metric) => {
           if (metric.name in blogMetricConfig) {
             const value = blogMetricConfig[metric.name as BlogMetricKey](blogProgressReport)
-            if (value !== metric.value) return { ...metric, value };
+            if (value !== metric.value && value !== '') return { ...metric, value };
           }
           return metric;
         }),

@@ -13,6 +13,11 @@ export const RANDOMETRIC_CONFIG = {
     label: 'Development',
     configs: [
       {
+        horizontal: true,
+        grow: { value: 0 },
+        size: { width: 2, height: 1 },
+      },
+      {
         size: {
           width: 2,
           height: 1,

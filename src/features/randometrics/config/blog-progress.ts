@@ -7,6 +7,9 @@ export const BLOG_PROGRESS_METRICS = {
         horizontal: true,
         grow: { value: 0 },
       },
+      {
+        size: { width: 1, height: 1 },
+      },
     ],
   },
   blogPublishProjected: {
@@ -34,7 +37,10 @@ export const BLOG_PROGRESS_METRICS = {
     configs: [
       {
         size: { width: 5 },
-      }
+      },
+      {
+        size: { width: 6 },
+      },
     ]
   },
 };

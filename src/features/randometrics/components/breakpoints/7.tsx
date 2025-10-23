@@ -1,20 +1,20 @@
-import { BorderCellContainer, ElasticResponseItem } from "../../../elastic-response";
+import { ElasticCellContainer, ElasticResponseItem } from "../../../elastic-response";
 import { Randometric } from "../Randometric";
 
 export const Randometric7 = () => (
   <ElasticResponseItem breakpoint={7}>
-    <BorderCellContainer>
-      <BorderCellContainer variant="row">
-        <BorderCellContainer>
+    <ElasticCellContainer>
+      <ElasticCellContainer variant="row">
+        <ElasticCellContainer>
           <Randometric
             name='blogIdeas'
           />
           <Randometric
             name='blogPublishedLast'
           />
-        </BorderCellContainer>
-        <BorderCellContainer>
-          <BorderCellContainer variant="row">
+        </ElasticCellContainer>
+        <ElasticCellContainer>
+          <ElasticCellContainer variant="row">
             <Randometric
               name='blogPublishProjected'
             />
@@ -22,23 +22,23 @@ export const Randometric7 = () => (
               width={1}
               height={2}
             />
-          </BorderCellContainer>
+          </ElasticCellContainer>
           <Randometric
             width={3}
             height={1}
           />
-        </BorderCellContainer>
-        <BorderCellContainer>
-        </BorderCellContainer>
-      </BorderCellContainer>
-      <BorderCellContainer>
+        </ElasticCellContainer>
+        <ElasticCellContainer>
+        </ElasticCellContainer>
+      </ElasticCellContainer>
+      <ElasticCellContainer>
         <Randometric
           name="blogUpcoming"
           width={5}
           height={2}
         />
-      </BorderCellContainer>
-    </BorderCellContainer>
+      </ElasticCellContainer>
+    </ElasticCellContainer>
   </ElasticResponseItem>
   
 );

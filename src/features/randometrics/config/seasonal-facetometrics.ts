@@ -3,7 +3,7 @@ import { RandometricConfigValidationProps } from "../types";
 import { PrimaryLabelChipProps } from "../../elastic-response/types";
 
 const SEASONAL_FACETOMETRIC_NAMES: {
-  season: string;
+  season: React.ReactNode;
   width: number;
 }[] = [
   { season: 'Burns Night', width: 4, },
@@ -46,7 +46,7 @@ const {
   horizontal,
   label,
   size,
-} = getSeasonalFacetometric({ ...now, month: now.month + 1 });
+} = getSeasonalFacetometric({ ...now, month: now.month });
 export const SEASONAL_FACETOMETRIC: RandometricConfigValidationProps = {
   configs: [
     {

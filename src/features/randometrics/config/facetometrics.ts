@@ -31,6 +31,7 @@ export const FACETOMETRICS = {
       },
     ],
     label: 'People Per Capita (PPC)',
+    // TODO: Implement a system to flicker this between 100% and 99.9% occasionally.
     value: '100%',
   },
   pi: {
@@ -286,6 +287,61 @@ export const FACETOMETRICS = {
     label: 'Intellectual Property (IPX)',
     value: 'MINE',
   },
+  // ipx: {
+  //   configs: [
+  //     {
+  //       grow: { value: 0 },
+  //       horizontal: true,
+  //       size: { width: 3, height: 1 },
+  //     },
+  //   ],
+  //   label: 'Intellectual Property (IPX)',
+  //   value: 'MINE',
+  // },
+  // ipx: {
+  //   configs: [
+  //     {
+  //       grow: { value: 0 },
+  //       horizontal: true,
+  //       size: { width: 3, height: 1 },
+  //     },
+  //   ],
+  //   label: 'Intellectual Property (IPX)',
+  //   value: 'MINE',
+  // },
+  // ipx: {
+  //   configs: [
+  //     {
+  //       grow: { value: 0 },
+  //       horizontal: true,
+  //       size: { width: 3, height: 1 },
+  //     },
+  //   ],
+  //   label: 'Intellectual Property (IPX)',
+  //   value: 'MINE',
+  // },
+  // ipx: {
+  //   configs: [
+  //     {
+  //       grow: { value: 0 },
+  //       horizontal: true,
+  //       size: { width: 3, height: 1 },
+  //     },
+  //   ],
+  //   label: 'Intellectual Property (IPX)',
+  //   value: 'MINE',
+  // },
+  // ipx: {
+  //   configs: [
+  //     {
+  //       grow: { value: 0 },
+  //       horizontal: true,
+  //       size: { width: 3, height: 1 },
+  //     },
+  //   ],
+  //   label: 'Intellectual Property (IPX)',
+  //   value: 'MINE',
+  // },
   msx: {
     configs: [
       {
@@ -310,5 +366,9 @@ export const FACETOMETRICS = {
   },
 };
 
-  }
-};
+// Key,Label,Value/Joke,Notes
+// slt,Self-Loathing Threshold,new Date().getFullYear() - 1,"A perpetually increasing value, suggesting the optimal moment for regret was always in the past."
+// imp,Imposter Syndrome Rating,1.1 (or 110%),"The idea that even when you feel like an imposter, you're overperforming at feeling like an imposter."
+// est,Existential Status Tracker,'Still working out the purpose of all this.',A meta-commentary on the entire dashboard's existence.
+// wmc,Worst Meeting Count,Number.MAX_SAFE_INTEGER,"A number so large it exceeds the safe limit, implying the number of bad meetings is literally uncountable."
+// cmt,Commit Message Quality,'fixed typo (honest)',A classic example of a vague or misleading commit message.
