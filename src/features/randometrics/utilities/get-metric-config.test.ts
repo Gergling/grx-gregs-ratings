@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Randometric } from '../config';
+import { Randometric, RandometricSelection } from '../config';
 import { getMetricConfig } from './get-metric-config';
 
 const mockRandometrics: Randometric[] = [
@@ -41,21 +41,31 @@ const mockRandometrics: Randometric[] = [
   },
 ];
 
+const mockSelected: RandometricSelection = {
+  dev: false, eot: false, brx: false, ppc: false, pi: false, wsv: false,
+  rnd: false, wtf: false, fom0: false, tldr: false, lgtm: false, afk: false,
+  sos: false, upm: false, bug: false, eta: false, dep: false, prod: false,
+  yag: false, ok: false, idx: false, gox: false, nix: false, lox: false,
+  iox: false, ipx: false, msx: false, prx: false, seasonal: false,
+  blogIdeas: false, blogPublishProjected: false, blogPublishedLast: false,
+  blogUpcoming: false,
+};
+
 describe('getMetricConfig', () => {
   it('should return undefined if no metrics are provided', () => {
-    const result = getMetricConfig({ name: 'dev' }, []);
+    const result = getMetricConfig({ name: 'dev' }, [], mockSelected);
     expect(result).toBeUndefined();
   });
 
   it('should return undefined if no match is found', () => {
     // @ts-expect-error - Testing with a name that is not a valid RandometricConfigKey.
-    const result = getMetricConfig({ name: 'nonExistent' }, mockRandometrics);
+    const result = getMetricConfig({ name: 'nonExistent' }, mockRandometrics, mockSelected);
     expect(result).toBeUndefined();
   });
 
   describe('when searching by name only', () => {
     it('should find the first metric that matches the name', () => {
-      const result = getMetricConfig({ name: 'dev' }, mockRandometrics);
+      const result = getMetricConfig({ name: 'dev' }, mockRandometrics, mockSelected);
       expect(result).toBe(mockRandometrics[0]);
       expect(result?.name).toBe('dev');
       expect(result?.priority).toBe(1);
@@ -65,18 +75,18 @@ describe('getMetricConfig', () => {
   describe('when searching by size only', () => {
     it('should find a metric with a non-horizontal effective size', () => {
       // 'dev' metric is { width: 1, height: 1, horizontal: false } -> effective 1x2
-      const result = getMetricConfig({ width: 1, height: 2 }, mockRandometrics);
+      const result = getMetricConfig({ width: 1, height: 2 }, mockRandometrics, mockSelected);
       expect(result).toBe(mockRandometrics[0]);
     });
 
     it('should find a metric with a horizontal effective size', () => {
       // 'eot' metric is { width: 2, height: 1, horizontal: true } -> effective 3x1
-      const result = getMetricConfig({ width: 3, height: 1 }, mockRandometrics);
+      const result = getMetricConfig({ width: 3, height: 1 }, mockRandometrics, mockSelected);
       expect(result).toBe(mockRandometrics[1]);
     });
 
     it('should return undefined for a size that does not match', () => {
-      const result = getMetricConfig({ width: 99, height: 99 }, mockRandometrics);
+      const result = getMetricConfig({ width: 99, height: 99 }, mockRandometrics, mockSelected);
       expect(result).toBeUndefined();
     });
   });
@@ -87,6 +97,7 @@ describe('getMetricConfig', () => {
       const result = getMetricConfig(
         { name: 'dev', width: 2, height: 1 },
         mockRandometrics,
+        { ...mockSelected, eot: true },
       );
       expect(result).toBe(mockRandometrics[3]);
       expect(result?.priority).toBe(4);
@@ -96,6 +107,7 @@ describe('getMetricConfig', () => {
       const result = getMetricConfig(
         { name: 'dev', width: 99, height: 99 },
         mockRandometrics,
+        mockSelected,
       );
       expect(result).toBeUndefined();
     });
@@ -105,7 +117,16 @@ describe('getMetricConfig', () => {
         // @ts-expect-error - Testing with a name that is not a valid RandometricConfigKey.
         { name: 'nonExistent', width: 1, height: 2 }, // 'nonExistent' is not a valid name
         mockRandometrics,
+        mockSelected,
       );
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('when a metric has already been selected', () => {
+    it('should return undefined if any matching metrics are selected', () => {
+      const selectedEot = { ...mockSelected, dev: true };
+      const result = getMetricConfig({ name: 'dev' }, mockRandometrics, selectedEot);
       expect(result).toBeUndefined();
     });
   });
