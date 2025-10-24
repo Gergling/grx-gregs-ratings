@@ -45,7 +45,7 @@ export const useBlogProgress = (): BlogProgressReport & {
     nextProjectedPublishDate,
     upcoming,
   } = useMemo(() => {
-    const ideas = data?.ideaCount.toString() ?? 'Unknown';
+    const ideas = data?.ideaCount.toString() ?? 'wat';
     const [upcoming] = (data?.upcomingList || []).map((item): UpcomingBlog => ({
       ...item,
       onClick: () => navigate(item.slug),
@@ -61,12 +61,12 @@ export const useBlogProgress = (): BlogProgressReport & {
     };
   }, [data]);
 
-  return {
+  return useMemo(() => ({
     ideas,
     isError,
     isLoading,
     lastPublished,
     nextProjectedPublishDate,
     upcoming,
-  };
+  }), [ideas, isError, isLoading, lastPublished, nextProjectedPublishDate, upcoming]);
 };

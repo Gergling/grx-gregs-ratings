@@ -1,10 +1,7 @@
-import { useCallback } from "react";
-import { articleTransformationFactory } from "../utilities";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { getRoute } from "../../../routes";
 import { FeaturedArticlesQueryResult, ListArticlesQueryResult } from "../../../libs/sanity";
 import { fetchSingleArticleBySlug } from "../queries";
+import { useArticleTransformationFactory } from "./use-article-transformation-factory";
 
 const ONE_DAY_MS = 1000 * 60 * 60 * 24;
 
@@ -22,11 +19,7 @@ export const useBlogListQuery = <
   fetcher: () => Promise<T>,
   key: 'featured-articles' | 'list-articles',
 ) => {
-  const navigate = useNavigate();
-  const transformer = useCallback(
-    articleTransformationFactory(navigate, getRoute('blog').path),
-    [navigate],
-  );
+  const transformer = useArticleTransformationFactory();
   return useQuery({
     queryKey: [key],
     queryFn: fetcher,
