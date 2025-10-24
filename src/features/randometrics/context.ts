@@ -1,11 +1,22 @@
 import { contextFactory } from "@gergling/ui-components";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { create } from "zustand";
-import { MetricPopProps, RANDOMETRIC_CONFIG, Randometric, RandometricConfigKey } from "./config";
+import {
+  MetricPopProps,
+  RANDOMETRIC_CONFIG,
+  Randometric,
+  RandometricConfigKey,
+  RandometricSelection
+} from "./config";
 import { getMetricConfig } from "./utilities/get-metric-config";
 import { getFlattenedRandometricConfig } from "./utilities/get-flattened-config";
 import { PrimaryLabelChipProps } from "../elastic-response/types";
 import { BlogProgressReport } from "../blogs";
+import { reduceRandometricValues } from "./utilities/reduce-values";
+
+type Values = {
+  [K in RandometricConfigKey]: ReactNode;
+};
 
 type ValueFn = (report: BlogProgressReport) => string;
 const defineMetricConfig = <T extends Partial<Record<RandometricConfigKey, ValueFn>>>(
@@ -19,6 +30,7 @@ const blogMetricConfig = defineMetricConfig({
 });
 
 type BlogMetricKey = keyof typeof blogMetricConfig;
+const blogMetricKeys = Object.keys(blogMetricConfig) as RandometricConfigKey[];
 
 const getRandometricNames = (randometrics: Randometric[]) => randometrics.map(({ name }) => name);
 
@@ -28,61 +40,80 @@ const staticRemaining = getRandometricNames(staticRandometrics);
 const metricStore = create<{
   randometrics: Randometric[];
   remaining: RandometricConfigKey[];
+  selected: RandometricSelection;
+  values: Values;
   setBlogProgress: (blogProgress: BlogProgressReport) => void;
   setDevProgress: (devChip: PrimaryLabelChipProps) => void;
   setSizeMetric: (size: number) => void;
   pop: (props: MetricPopProps) => Randometric | undefined;
-  reset: () => void;
 }>((set, get) => {
-  const reset = () => {
-    const { randometrics } = get();
-    set({ remaining: getRandometricNames(randometrics) });
-  };
+  const {
+    selected,
+    values
+  } = staticRandometrics.reduce(({
+    selected,
+    values
+  }, metric) => ({
+    values: {
+      ...values,
+      [metric.name]: metric.value,
+    },
+    selected: {
+      ...selected,
+      [metric.name]: false,
+    },
+  }), {
+    values: {} as Values,
+    selected: {} as RandometricSelection,
+  });
+
   return {
     randometrics: staticRandometrics,
     remaining: staticRemaining,
+    selected,
+    values,
     setBlogProgress: (blogProgressReport) => {
-      set((state) => ({
-        randometrics: state.randometrics.map((metric) => {
-          if (metric.name in blogMetricConfig) {
-            const value = blogMetricConfig[metric.name as BlogMetricKey](blogProgressReport)
-            if (value !== metric.value && value !== '') return { ...metric, value };
-          }
-          return metric;
-        }),
-      }));
+      const values = reduceRandometricValues(get().values, (previous, key) => {
+        if (!(blogMetricKeys.includes(key))) return previous;
+
+        return blogMetricConfig[key as BlogMetricKey](blogProgressReport);
+      });
+
+      set({ values });
     },
     setDevProgress: (devChip) => {
-      set((state) => ({
-        randometrics: state.randometrics.map((metric) => {
-          if (metric.name === 'dev') return { ...metric, value: devChip.value };
-          return metric;
-        }),
-      }));
+      const values = reduceRandometricValues(get().values, (previous, key) => {
+        if (key !== 'dev') return previous;
+
+        return devChip.value;
+      });
+
+      set({ values });
     },
     setSizeMetric: (value) => {
-      set((state) => ({
-        randometrics: state.randometrics.map((metric) => {
-          if (metric.name === 'sos') return { ...metric, value };
-          return metric;
-        }),
-      }));
+      const values = reduceRandometricValues(get().values, (previous, key) => {
+        if (key !== 'sos') return previous;
+
+        return value;
+      });
+
+      set({ values });
     },
     pop: (props) => {
-      const { randometrics } = get();
-      const metric = getMetricConfig(props, randometrics);
-      // console.log('pop', props, metric)
+      const { randometrics, selected } = get();
+      const metric = getMetricConfig(props, randometrics, selected);
       // TODO: Need to update UPM while updating this.
-      // Consider updating the status of each one of these to being "in use" somehow.
-      // if (metric) {
-      //   set((state) => ({
-      //     remaining: state.remaining.filter((name) => name !== metric.name),
-      //   }));
-      // }
-      // TODO: Probably best to mark the metric as in use.
+      if (metric) {
+        // set({
+        //   selected: {
+        //     ...selected,
+        //     [metric.name]: true,
+        //   },
+        // });
+      }
+
       return metric;
     },
-    reset,
   };
 });
 

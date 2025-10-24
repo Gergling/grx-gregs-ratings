@@ -2,13 +2,14 @@ import { useCallback, useEffect } from "react";
 import { useRandometricDevelopmentProgress } from "./use-development-progress";
 import { useBlogProgress } from "../../blogs";
 import { useRandometricsContext } from "../context";
-import { MetricPopProps } from "../config";
-import { PrimaryLabelChipProps } from "../../elastic-response/types";
-import { getEffectiveSizeOffset } from "../utilities/get-effective-size-offset";
+import { MetricPopProps, Randometric } from "../config";
 import { useElasticResponse } from "../../elastic-response";
+import { getRandometricPlaceholder } from "../utilities/get-placeholder";
 
 export const useRandometrics = () => {
   const {
+    randometrics,
+    values,
     pop,
     setBlogProgress,
     setDevProgress,
@@ -19,30 +20,12 @@ export const useRandometrics = () => {
   const { size } = useElasticResponse();
 
   const popMetric = useCallback(
-    (props: MetricPopProps): PrimaryLabelChipProps => {
+    (props: MetricPopProps): Randometric => {
       const metric = pop(props);
-      const { height: requestedHeight, width: requestedWidth } = props;
-      if (!metric) {
-        const horizontal = requestedHeight === 1;
-        const offset = getEffectiveSizeOffset(horizontal);
-        const height = requestedHeight === undefined ? 1 : requestedHeight - offset.height;
-        const width = requestedWidth === undefined ? 1 : requestedWidth - offset.width;
-        return {
-          label: 'Crows',
-          grow: { value: 0 },
-          horizontal,
-          size: {
-            height,
-            width,
-          },
-          value: '3',
-        };
-      }
 
-      return {
-        ...metric.props,
-        value: metric.value,
-      };
+      if (metric) return metric;
+
+      return getRandometricPlaceholder(props);
     },
     [pop]
   );
@@ -58,6 +41,8 @@ export const useRandometrics = () => {
   }, [size, setSizeMetric]);
 
   return {
+    randometrics,
+    values,
     popMetric,
   };
 };

@@ -29,6 +29,7 @@ export const RANDOMETRIC_CONFIG = {
 
 export type RandometricConfig = RandometricConfigValidation<typeof RANDOMETRIC_CONFIG>;
 export type RandometricConfigKey = keyof RandometricConfig;
+export const RANDOMETRIC_CONFIG_KEYS = Object.keys(RANDOMETRIC_CONFIG) as RandometricConfigKey[];
 
 type RequireKey<
   T extends {},
@@ -58,4 +59,8 @@ export type MetricPopProps = {
   height?: number;
   width?: number;
   name: RandometricConfigKey;
+};
+
+export type RandometricSelection = {
+  [K in RandometricConfigKey]: boolean;
 };
