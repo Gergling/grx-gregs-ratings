@@ -50,8 +50,6 @@ export type Randometric = {
   value?: PrimaryLabelChipProps['value'];
 };
 
-export const RANDOMETRIC_CONFIG_KEYS = Object.keys(RANDOMETRIC_CONFIG) as RandometricConfigKey[];
-
 export type MetricPopProps = {
   height: number;
   width: number;
@@ -60,8 +58,4 @@ export type MetricPopProps = {
   height?: number;
   width?: number;
   name: RandometricConfigKey;
-};
-
-export type RandometricValues = {
-  [K in RandometricConfigKey]: PrimaryLabelChipProps['value'];
 };

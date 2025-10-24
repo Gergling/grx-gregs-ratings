@@ -71,11 +71,14 @@ const metricStore = create<{
     pop: (props) => {
       const { randometrics } = get();
       const metric = getMetricConfig(props, randometrics);
-      if (metric) {
-        set((state) => ({
-          remaining: state.remaining.filter((name) => name !== metric.name),
-        }));
-      }
+      // console.log('pop', props, metric)
+      // TODO: Need to update UPM while updating this.
+      // Consider updating the status of each one of these to being "in use" somehow.
+      // if (metric) {
+      //   set((state) => ({
+      //     remaining: state.remaining.filter((name) => name !== metric.name),
+      //   }));
+      // }
       // TODO: Probably best to mark the metric as in use.
       return metric;
     },
