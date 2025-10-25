@@ -36,9 +36,11 @@ export const BLOG_PROGRESS_METRICS = {
     label: 'Upcoming Blog Title',
     configs: [
       {
+        textMaskFaded: true,
         size: { width: 5 },
       },
       {
+        textMaskFaded: true,
         size: { width: 6 },
       },
     ]
