@@ -1,8 +1,9 @@
-import { ElasticCellContainer, ElasticResponseItem } from "../../../elastic-response";
+import { ElasticCellContainer } from "../../../elastic-response";
 import { Randometric } from "../Randometric";
+import { RandometricsResponseItem } from "../RandometricsResponseItem";
 
 export const Randometric12 = () => (
-  <ElasticResponseItem breakpoint={12}>
+  <RandometricsResponseItem breakpoint={12}>
     <ElasticCellContainer>
       <ElasticCellContainer variant="row">
         <Randometric
@@ -42,6 +43,6 @@ export const Randometric12 = () => (
         />
       </ElasticCellContainer>
     </ElasticCellContainer>
-  </ElasticResponseItem>
+  </RandometricsResponseItem>
   
 );

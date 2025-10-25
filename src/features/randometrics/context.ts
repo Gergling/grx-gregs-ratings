@@ -2,13 +2,11 @@ import { contextFactory } from "@gergling/ui-components";
 import { PropsWithChildren, ReactNode } from "react";
 import { create } from "zustand";
 import {
-  MetricPopProps,
   RANDOMETRIC_CONFIG,
   Randometric,
   RandometricConfigKey,
   RandometricSelection
 } from "./config";
-import { getMetricConfig } from "./utilities/get-metric-config";
 import { getFlattenedRandometricConfig } from "./utilities/get-flattened-config";
 import { PrimaryLabelChipProps } from "../elastic-response/types";
 import { BlogProgressReport } from "../blogs";
@@ -45,7 +43,7 @@ const metricStore = create<{
   setBlogProgress: (blogProgress: BlogProgressReport) => void;
   setDevProgress: (devChip: PrimaryLabelChipProps) => void;
   setSizeMetric: (size: number) => void;
-  pop: (props: MetricPopProps) => Randometric | undefined;
+  setSelected: (name: RandometricConfigKey) => void;
 }>((set, get) => {
   const {
     selected,
@@ -99,21 +97,12 @@ const metricStore = create<{
 
       set({ values });
     },
-    pop: (props) => {
-      const { randometrics, selected } = get();
-      const metric = getMetricConfig(props, randometrics, selected);
-      // TODO: Need to update UPM while updating this.
-      if (metric) {
-        // set({
-        //   selected: {
-        //     ...selected,
-        //     [metric.name]: true,
-        //   },
-        // });
-      }
-
-      return metric;
-    },
+    setSelected: (metricName) => set((state) => ({
+      selected: {
+        ...state.selected,
+        [metricName]: true,
+      },
+    })),
   };
 });
 

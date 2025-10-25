@@ -1,13 +1,13 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { MetricPopProps, Randometric } from "../config";
 import { useRandometrics } from "./use-randometrics";
 
 export const useRandometric = (props: MetricPopProps): Randometric => {
-  const { popMetric, values } = useRandometrics();
+  const { getMetric, setSelected, values } = useRandometrics();
 
   const metric = useMemo(
-    () => popMetric(props),
-    [popMetric, props]
+    () => getMetric(props),
+    [getMetric, props]
   );
   const value = useMemo(
     () => {
@@ -18,6 +18,10 @@ export const useRandometric = (props: MetricPopProps): Randometric => {
     },
     [metric.name, values]
   );
+
+  useEffect(() => {
+    // setSelected(metric.name);
+  }, [metric.name, setSelected])
 
   return useMemo(() => ({
     ...metric,

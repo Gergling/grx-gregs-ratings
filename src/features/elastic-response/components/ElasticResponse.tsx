@@ -4,6 +4,7 @@ import { create } from "zustand";
 import useWindowWidthRem from "../../../common/hooks/use-window-width-rem";
 import { getRem, getSize } from "../utilities/rem-cell";
 import { getVisibleBreakpoint } from "../utilities/get-visible-breakpoint";
+import { ElasticResponseItemProps } from "../types";
 
 const elasticResponseStore = create<{
   breakpoints: number[];
@@ -107,9 +108,7 @@ export const useElasticResponse = () => {
 export const ElasticResponseItem = ({
   breakpoint,
   children,
-}: PropsWithChildren & {
-  breakpoint: number;
-}) => {
+}: ElasticResponseItemProps) => {
   const {
     isVisible,
     register,

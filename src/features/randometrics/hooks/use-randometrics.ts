@@ -5,29 +5,34 @@ import { useRandometricsContext } from "../context";
 import { MetricPopProps, Randometric } from "../config";
 import { useElasticResponse } from "../../elastic-response";
 import { getRandometricPlaceholder } from "../utilities/get-placeholder";
+import { getMetricConfig } from "../utilities";
 
 export const useRandometrics = () => {
   const {
     randometrics,
+    selected,
     values,
-    pop,
     setBlogProgress,
     setDevProgress,
     setSizeMetric,
+    setSelected,
   } = useRandometricsContext();
   const progress = useBlogProgress();
   const dev = useRandometricDevelopmentProgress();
   const { size } = useElasticResponse();
+  // TODO: Calculate the UPM value here. useEffect it back into the store, probably.
 
-  const popMetric = useCallback(
+  const getMetric = useCallback(
     (props: MetricPopProps): Randometric => {
-      const metric = pop(props);
-
-      if (metric) return metric;
+      const metric = getMetricConfig(props, randometrics, selected);
+      if (metric) {
+        // setSelected(metric.name);
+        return metric;
+      }
 
       return getRandometricPlaceholder(props);
     },
-    [pop]
+    [randometrics, selected]
   );
 
   useEffect(() => {
@@ -43,6 +48,7 @@ export const useRandometrics = () => {
   return {
     randometrics,
     values,
-    popMetric,
+    getMetric,
+    setSelected,
   };
 };

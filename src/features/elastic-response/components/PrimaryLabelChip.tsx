@@ -8,6 +8,7 @@ export const PrimaryLabelChip = ({
   grow,
   horizontal = false,
   label,
+  textMaskFaded = false,
   size,
   value,
 }: PrimaryLabelChipProps) => {
@@ -47,7 +48,17 @@ export const PrimaryLabelChip = ({
       </Typography>
       <BlockChip
         color='primary'
-        label={<Typography variant="body1">{value}</Typography>}
+        label={<Typography
+          variant="body1"
+          sx={{
+            maskImage: textMaskFaded ? `linear-gradient(
+              to right, 
+              black 0, 
+              black calc(100% - 3rem), 
+              transparent 100%
+            )` : ``,
+          }}
+        >{value}</Typography>}
         sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -56,7 +67,7 @@ export const PrimaryLabelChip = ({
           height: '100%',
           '& .MuiChip-label': {
             textAlign: 'center',
-            whiteSpace: 'normal',
+            whiteSpace: textMaskFaded ? 'nowrap' : 'normal',
           },
         }}
       />

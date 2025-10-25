@@ -19,5 +19,10 @@ export type PrimaryLabelChipProps = {
   grow?: {
     label?: CSSProperties['flexGrow'];
     value?: CSSProperties['flexGrow'];
-  }
+  };
+  textMaskFaded?: boolean;
+};
+
+export type ElasticResponseItemProps = PropsWithChildren & {
+  breakpoint: number;
 };
