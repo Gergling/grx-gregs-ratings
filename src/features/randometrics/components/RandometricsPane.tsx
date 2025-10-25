@@ -1,5 +1,6 @@
 import { ElasticResponsivePane } from "../../elastic-response/components/ElasticResponsivePaneContainer";
 import {
+  Randometric10,
   Randometric11,
   Randometric12,
   Randometric5,
@@ -16,6 +17,7 @@ export const RandometricsPane = () => {
       <Randometric6 />
       <Randometric7 />
       <Randometric8 />
+      <Randometric10 />
       <Randometric11 />
       <Randometric12 />
 
