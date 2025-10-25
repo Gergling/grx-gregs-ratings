@@ -10,9 +10,9 @@ describe('getVisibleBreakpoint', () => {
   });
 
   describe('with a viewport smaller than the smallest breakpoint', () => {
-    it('should return 0', () => {
-      expect(getVisibleBreakpoint(599, breakpoints)).toBe(0);
-      expect(getVisibleBreakpoint(0, breakpoints)).toBe(0);
+    it('should return the smallest breakpoint', () => {
+      expect(getVisibleBreakpoint(599, breakpoints)).toBe(breakpoints[breakpoints.length - 1]);
+      expect(getVisibleBreakpoint(0, breakpoints)).toBe(breakpoints[breakpoints.length - 1]);
     });
   });
 

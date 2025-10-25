@@ -32,5 +32,5 @@ export const getVisibleBreakpoint = (
 
   // If no breakpoint is smaller than the viewport (e.g., viewport is 500),
   // it means we are below the smallest breakpoint. Return 0 as a base case.
-  return activeBreakpoint ?? 0;
+  return activeBreakpoint ?? breakpoints[breakpoints.length - 1];
 };
