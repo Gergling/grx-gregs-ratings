@@ -3,6 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 import { resolveDocumentActions } from './utilities/resolve-document-actions'
+import { postWorkflowStructure } from './utilities/post-workflow-structure'
 
 export default defineConfig({
   name: 'default',
@@ -11,7 +12,13 @@ export default defineConfig({
   projectId: 'd8f0naws',
   dataset: 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      // Set the custom structure here
+      structure: postWorkflowStructure, 
+    }),
+    visionTool()
+  ],
 
   document: {
     actions: resolveDocumentActions,

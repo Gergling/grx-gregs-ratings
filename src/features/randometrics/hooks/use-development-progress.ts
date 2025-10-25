@@ -1,9 +1,8 @@
 import { MetricChip } from "@gergling/ui-components";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-
-// Development milestone data can be valid for about 12 hours.
-const TWELVE_HOURS = 1000 * 60 * 60 * 12;
+import { TWELVE_HOURS_IN_MS } from "../../../common/constants";
+import { PrimaryLabelChipProps } from "../../elastic-response/types";
 
 const getLabel = (title: string = 'Development') => `${title} Progress (${title.charAt(0)}PX)`;
 
@@ -19,7 +18,7 @@ const fetchDevelopmentProgressData = async () => {
 
 type MetricChipProps = Parameters<typeof MetricChip>[0];
 
-export const useRandometricDevelopmentProgress = (): MetricChipProps => {
+export const useRandometricDevelopmentProgress = (): PrimaryLabelChipProps => {
   const {
     data,
     error,
@@ -27,15 +26,16 @@ export const useRandometricDevelopmentProgress = (): MetricChipProps => {
   } = useQuery({
     queryKey: ['development-progress'],
     queryFn: fetchDevelopmentProgressData,
-    staleTime: TWELVE_HOURS,
-    gcTime: TWELVE_HOURS,
+    staleTime: TWELVE_HOURS_IN_MS,
+    gcTime: TWELVE_HOURS_IN_MS,
   });
 
   const {
-    color,
     label,
     value,
   } = useMemo((): MetricChipProps => {
+    const label = getLabel(data?.title);
+
     if (error) return {
       color: 'error',
       label: getLabel(),
@@ -55,7 +55,6 @@ export const useRandometricDevelopmentProgress = (): MetricChipProps => {
     const total = data.closed_issues + data.open_issues;
     const fraction = data.closed_issues / total;
     const value = `${(fraction * 100).toFixed()}%`;
-    const label = getLabel(data.title);
 
     return {
       color: 'primary',
@@ -64,9 +63,5 @@ export const useRandometricDevelopmentProgress = (): MetricChipProps => {
     };
   }, [data, error, isLoading]);
 
-  return {
-    color,
-    label,
-    value,
-  };
+  return useMemo(() => ({ label, value }), [label, value]);
 };

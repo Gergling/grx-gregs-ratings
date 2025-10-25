@@ -10,7 +10,7 @@ const baseArticleFields = `
 `;
 
 const featuredArticlesQuery = defineQuery(`
-  *[_type == "post"]
+  *[_type == "post" && status == "ready"]
   | order(publishedAt desc)
   [0...3]
   {
@@ -35,7 +35,7 @@ export const fetchSingleArticleBySlug = (slug: string) =>
   sanityClientFetch(singleArticleBySlugQuery, { slug });
 
 const listArticlesQuery = defineQuery(`
-  *[_type == "post"]
+  *[_type == "post" && status == "ready"]
   | order(publishedAt desc)
   {
     ${baseArticleFields}
@@ -53,24 +53,14 @@ const articleProgressStatusQuery = defineQuery(`
       status == "upcoming"
     ] | order(_createdAt asc) {
       title,
-      "url": slug.current,
+      "slug": slug.current,
+      "hasBody": defined(body),
+      "hasImage": defined(mainImage)
     },
-    "readyList": *[
+    "publishDates": *[
       _type == "post" &&
-      status == "ready" &&
-      string::startsWith(_id, "drafts.")
-    ] | order(publishedAt desc) {
-      title,
-      "url": slug.current
-    },
-    "latestPublishedList": *[
-      _type == "post" &&
-      status == "ready" &&
-      !string::startsWith(_id, "drafts.")
-    ] | order(publishedAt desc)[0...3] {
-      title,
-      "url": slug.current
-    }
+      publishedAt != null
+    ].publishedAt | order(publishedAt desc)
   }
 `);
 

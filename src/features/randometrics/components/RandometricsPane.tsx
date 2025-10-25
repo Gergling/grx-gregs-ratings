@@ -1,36 +1,24 @@
-import { MetricChip } from "@gergling/ui-components"
-import { useRandometricDevelopmentProgress } from "../hooks"
-import { useMemo } from "react";
-import { MetricChipProps } from "../types";
-import { FACETOMETRICS } from "../constants";
-import { Temporal } from "@js-temporal/polyfill";
-import { getSeasonalFacetometric } from "../utilities";
-import { RandoMetricsContainer } from "./RandometricsPane.style";
-import { PaneContainer } from "../../../common/components/PaneContainer";
+import { ElasticResponsivePane } from "../../elastic-response/components/ElasticResponsivePaneContainer";
+import {
+  Randometric11,
+  Randometric12,
+  Randometric5,
+  Randometric6,
+  Randometric7,
+  Randometric8,
+} from "./breakpoints";
 
 export const RandometricsPane = () => {
-  const now = useMemo(() => Temporal.Now.zonedDateTimeISO(), []);
-  const seasonal = useMemo(() => getSeasonalFacetometric(now), [now]);
-  const mvp = useRandometricDevelopmentProgress();
-  const metrics = useMemo((): MetricChipProps[] => {
-    return [
-      ...FACETOMETRICS,
-      mvp,
-      seasonal,
-    ];
-  }, [mvp, seasonal])
   return (
-    <PaneContainer>
-      <RandoMetricsContainer>
-        {metrics.map((metric) => (
-          <MetricChip
-            key={metric.label}
-            color={metric.color}
-            label={metric.label}
-            value={metric.value}
-          />
-        ))}
-      </RandoMetricsContainer>
-    </PaneContainer>
+    <ElasticResponsivePane offset={7}>
+
+      <Randometric5 />
+      <Randometric6 />
+      <Randometric7 />
+      <Randometric8 />
+      <Randometric11 />
+      <Randometric12 />
+
+    </ElasticResponsivePane>
   );
 }

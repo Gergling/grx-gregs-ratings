@@ -1,5 +1,5 @@
 import { RouteProps } from "react-router-dom";
-import { BlogListPage, BlogPage, HomePage, TeamPage } from "./pages";
+import { AboutPage, BlogListPage, BlogPage, HomePage, TeamPage } from "./pages";
 
 type RouteTemplate = {
   [key: string]: RouteProps;
@@ -22,6 +22,10 @@ const routes = {
   team: {
     path: "/team",
     element: <TeamPage />,
+  },
+  about: {
+    path: "/about",
+    element: <AboutPage />,
   },
 } as const;
 

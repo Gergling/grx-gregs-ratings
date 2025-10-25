@@ -13,6 +13,7 @@ import '@fontsource-variable/bodoni-moda-sc';
 import '@fontsource-variable/raleway';
 import '@fontsource-variable/raleway/wght-italic.css';
 import { getRoute, getRoutes } from '../routes';
+import { ElasticResponseContainer } from '../features/elastic-response/components/ElasticResponse';
 
 const MainContent = styled.main`
   padding: 2rem;
@@ -66,20 +67,22 @@ const App: React.FC = () => {
   return (
     <AppThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <PageContainer
-          appHeaderProps={{
-            title: 'Gregory, Michael & Davies',
-          }}
-          navigationDrawerProps={{
-            items,
-          }}
-        >
-          <MainContent>
-            <Routes>
-              {routes.map(({ props }) => <Route {...props} />)}
-            </Routes>
-          </MainContent>
-        </PageContainer>
+        <ElasticResponseContainer>
+          <PageContainer
+            appHeaderProps={{
+              title: 'Gregory, Michael & Davies',
+            }}
+            navigationDrawerProps={{
+              items,
+            }}
+          >
+            <MainContent>
+              <Routes>
+                {routes.map(({ props }) => <Route {...props} />)}
+              </Routes>
+            </MainContent>
+          </PageContainer>
+        </ElasticResponseContainer>
       </QueryClientProvider>
     </AppThemeProvider>
   );

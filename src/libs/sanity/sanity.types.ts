@@ -254,7 +254,7 @@ export type AllSanitySchemaTypes = BlockContent | Category | Post | Author | San
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../src/features/blogs/queries.ts
 // Variable: featuredArticlesQuery
-// Query: *[_type == "post"]  | order(publishedAt desc)  [0...3]  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt,  }
+// Query: *[_type == "post" && status == "ready"]  | order(publishedAt desc)  [0...3]  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt,  }
 export type FeaturedArticlesQueryResult = Array<{
   title: string;
   slug: string;
@@ -279,7 +279,7 @@ export type SingleArticleBySlugQueryResult = {
   body: BlockContent | null;
 } | null;
 // Variable: listArticlesQuery
-// Query: *[_type == "post"]  | order(publishedAt desc)  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt,  }
+// Query: *[_type == "post" && status == "ready"]  | order(publishedAt desc)  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt,  }
 export type ListArticlesQueryResult = Array<{
   title: string;
   slug: string;
@@ -291,30 +291,25 @@ export type ListArticlesQueryResult = Array<{
   publishedAt: string | null;
 }>;
 // Variable: articleProgressStatusQuery
-// Query: {    "ideaCount": count(*[_type == "post" && status == "idea"]),    "upcomingList": *[      _type == "post" &&      status == "upcoming"    ] | order(_createdAt asc) {      title,      "url": slug.current,    },    "readyList": *[      _type == "post" &&      status == "ready" &&      string::startsWith(_id, "drafts.")    ] | order(publishedAt desc) {      title,      "url": slug.current    },    "latestPublishedList": *[      _type == "post" &&      status == "ready" &&      !string::startsWith(_id, "drafts.")    ] | order(publishedAt desc)[0...3] {      title,      "url": slug.current    }  }
+// Query: {    "ideaCount": count(*[_type == "post" && status == "idea"]),    "upcomingList": *[      _type == "post" &&      status == "upcoming"    ] | order(_createdAt asc) {      title,      "slug": slug.current,      "hasBody": defined(body),      "hasImage": defined(mainImage)    },    "publishDates": *[      _type == "post" &&      publishedAt != null    ].publishedAt | order(publishedAt desc)  }
 export type ArticleProgressStatusQueryResult = {
   ideaCount: number;
   upcomingList: Array<{
     title: string;
-    url: string;
+    slug: string;
+    hasBody: false | true;
+    hasImage: false | true;
   }>;
-  readyList: Array<{
-    title: string;
-    url: string;
-  }>;
-  latestPublishedList: Array<{
-    title: string;
-    url: string;
-  }>;
+  publishDates: Array<string | null>;
 };
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n  *[_type == \"post\"]\n  | order(publishedAt desc)\n  [0...3]\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n  }\n": FeaturedArticlesQueryResult;
+    "\n  *[_type == \"post\" && status == \"ready\"]\n  | order(publishedAt desc)\n  [0...3]\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n  }\n": FeaturedArticlesQueryResult;
     "\n  *[_type == \"post\" && slug.current == $slug]\n  | order(publishedAt desc)\n  [0]\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n    body\n  }\n": SingleArticleBySlugQueryResult;
-    "\n  *[_type == \"post\"]\n  | order(publishedAt desc)\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n  }\n": ListArticlesQueryResult;
-    "\n  {\n    \"ideaCount\": count(*[_type == \"post\" && status == \"idea\"]),\n    \"upcomingList\": *[\n      _type == \"post\" &&\n      status == \"upcoming\"\n    ] | order(_createdAt asc) {\n      title,\n      \"url\": slug.current,\n    },\n    \"readyList\": *[\n      _type == \"post\" &&\n      status == \"ready\" &&\n      string::startsWith(_id, \"drafts.\")\n    ] | order(publishedAt desc) {\n      title,\n      \"url\": slug.current\n    },\n    \"latestPublishedList\": *[\n      _type == \"post\" &&\n      status == \"ready\" &&\n      !string::startsWith(_id, \"drafts.\")\n    ] | order(publishedAt desc)[0...3] {\n      title,\n      \"url\": slug.current\n    }\n  }\n": ArticleProgressStatusQueryResult;
+    "\n  *[_type == \"post\" && status == \"ready\"]\n  | order(publishedAt desc)\n  {\n    \n  title,\n  \"slug\": slug.current,\n  \"image\": mainImage.asset->url,\n  categories[]->{description, title},\n  publishedAt,\n\n  }\n": ListArticlesQueryResult;
+    "\n  {\n    \"ideaCount\": count(*[_type == \"post\" && status == \"idea\"]),\n    \"upcomingList\": *[\n      _type == \"post\" &&\n      status == \"upcoming\"\n    ] | order(_createdAt asc) {\n      title,\n      \"slug\": slug.current,\n      \"hasBody\": defined(body),\n      \"hasImage\": defined(mainImage)\n    },\n    \"publishDates\": *[\n      _type == \"post\" &&\n      publishedAt != null\n    ].publishedAt | order(publishedAt desc)\n  }\n": ArticleProgressStatusQueryResult;
   }
 }

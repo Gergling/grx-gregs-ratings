@@ -1,1 +1,1 @@
-export * from './transform-article';
+export * from './get-blog-uri';
