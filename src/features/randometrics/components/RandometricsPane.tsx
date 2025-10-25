@@ -7,6 +7,7 @@ import {
   Randometric6,
   Randometric7,
   Randometric8,
+  Randometric9,
 } from "./breakpoints";
 
 export const RandometricsPane = () => {
@@ -17,6 +18,7 @@ export const RandometricsPane = () => {
       <Randometric6 />
       <Randometric7 />
       <Randometric8 />
+      <Randometric9 />
       <Randometric10 />
       <Randometric11 />
       <Randometric12 />
