@@ -3,6 +3,7 @@ import { RandometricsPane } from '../features/randometrics';
 import { useElasticResponse } from '../features/elastic-response';
 import { useMemo } from 'react';
 import { HomePageContainer } from './Home.style';
+import { Seo } from '../common/components/Seo';
 
 export const HomePage: React.FC = () => {
   const { getWidth } = useElasticResponse();
@@ -14,6 +15,10 @@ export const HomePage: React.FC = () => {
 
   return (
     <HomePageContainer width={width}>
+      <Seo
+        title="Dashboard"
+        description="Gregory, Michael & Davies cruel and unusual measurements, ratings and categorisations."
+      />
       <RandometricsPane />
       <FeaturedBlogs />
     </HomePageContainer>
