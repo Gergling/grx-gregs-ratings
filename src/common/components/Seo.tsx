@@ -17,7 +17,7 @@ export const Seo: React.FC<SeoProps> = ({
   const { pathname } = useLocation();
 
   const canonicalUrl = useMemo(
-    () => urlProp || new URL(`${ENV_BASE_URL}${pathname}`, URL_ROOT).href,
+    () => urlProp || new URL(pathname, URL_ROOT).href,
     [pathname, urlProp]
   );
 
