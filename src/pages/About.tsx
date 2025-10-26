@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Typography, TypographyProps } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Seo } from '../common/components/Seo';
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -36,6 +37,10 @@ const Paragraph = styled.p`
 export const AboutPage: React.FC = () => {
   return (
     <PageContainer>
+      <Seo
+        title="About GM&D"
+        description="About Gregory, Michael & Davies cruel and unusual measurements, ratings and categorisations."
+      />
       <Title>
         About Gregory, Michael & Davies
       </Title>
