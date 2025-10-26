@@ -1,6 +1,6 @@
 // blogPost.test.tsx (Vitest/RTL)
 import { render } from '@testing-library/react';
-import { expect, it, test } from 'vitest';
+import { expect, it } from 'vitest';
 
 // Assume BlogDetailPage correctly renders <title> and <meta> tags
 import { Seo } from './Seo';
