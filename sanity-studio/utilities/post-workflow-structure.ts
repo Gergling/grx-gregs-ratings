@@ -46,7 +46,10 @@ const WORKFLOW_SECTIONS: {
 /**
  * Creates the filtered list items for the Studio's sidebar.
  */
-function createWorkflowListItems(S: StructureBuilder, context: StructureResolverContext): ListItemBuilder[] {
+function createWorkflowListItems(
+  S: StructureBuilder,
+  // context: StructureResolverContext
+): ListItemBuilder[] {
   return WORKFLOW_SECTIONS.map(section => {
     return S.listItem()
       .title(section.title)
@@ -88,7 +91,8 @@ export const postWorkflowStructure = (S: StructureBuilder, context: StructureRes
       // S.divider(), // A visual separator
       
       // 2. The dynamic list of posts separated by their status
-      ...createWorkflowListItems(S, context),
+      // ...createWorkflowListItems(S, context),
+      ...createWorkflowListItems(S),
       // S.listItem()
       //   .title('✨ Posts')
       //   .child(
