@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { AppThemeProvider, PageContainer } from '@gergling/ui-components';
@@ -61,9 +61,30 @@ const useNavigationItems = () => {
   return items;
 };
 
+const useStaticNavigation = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    // 1. Check if the session storage has a path we need to redirect to
+    const redirectPath = sessionStorage.getItem('redirect');
+    
+    if (redirectPath && redirectPath !== window.location.pathname) {
+      // 2. Clear the storage so we don't loop
+      sessionStorage.removeItem('redirect');
+
+      // 3. Use your router's navigation function to go to the original path
+      // ASSUMING YOU USE react-router-dom:
+      navigate(redirectPath);
+      
+      // OR, if you use simple window.location management (less common):
+      // window.history.replaceState(null, '', redirectPath);
+    }
+  }, []);
+}
+
 const App: React.FC = () => {
   const routes = getRoutes();
   const items = useNavigationItems();
+  useStaticNavigation();
   return (
     <AppThemeProvider>
       <QueryClientProvider client={queryClient}>

@@ -1,0 +1,31 @@
+<!-- 
+  This file is a trick to handle HTML5 routing (the "refresh problem")
+  on GitHub Pages. GitHub Pages serves this file on a 404 error.
+  The JavaScript below immediately redirects the browser back to the 
+  correct path, allowing the React router to take over.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Routing Redirect</title>
+    <script>
+      // Function to get the path, adjusting for the repository name (if needed)
+      var path = window.location.pathname;
+      
+      // If your repository is published at a sub-path (e.g., /grx-gregs-ratings/), 
+      // you must adjust the path before redirecting. 
+      // The path variable already includes the sub-path.
+      
+      sessionStorage.setItem('redirect', path);
+      
+      // Redirect to the main index.html file.
+      // The base of your application is where index.html lives.
+      window.location.replace('/'); 
+    </script>
+  </head>
+  <body>
+    <!-- A simple message for users whose JS fails or is slow -->
+    <p>Redirecting...</p>
+  </body>
+</html>
