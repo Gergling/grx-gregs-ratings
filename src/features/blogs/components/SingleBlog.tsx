@@ -1,15 +1,17 @@
+import { useMemo } from "react";
 import { PortableText } from "@portabletext/react";
-import { useBlogItemQuery } from "../hooks";
-import { BlockContent } from "../../../libs/sanity";
-import { ReadablePublishingTime } from "./ReadablePublishingTime";
+import { toHTML } from '@portabletext/to-html'
 import { Typography } from "@mui/material";
+import { Seo } from "../../../common/components/Seo";
+import { BlockContent } from "../../../libs/sanity";
+import { useBlogItemQuery } from "../hooks";
+import { ReadablePublishingTime } from "./ReadablePublishingTime";
 
 type SingleBlogProps = { slug: string; };
 
 const RenderBlog = ({
   title,
   image,
-  // categories,
   publishedAt,
   body,
 }: {
@@ -23,9 +25,25 @@ const RenderBlog = ({
   publishedAt: string | null;
   body: BlockContent;
 }) => {
+  const blogDescription = useMemo(() => {
+    const html = toHTML(body);
+    const text = html.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    if (text.length < 150) return text;
+
+    const truncatedByLength = text.substring(0, 150);
+    const lastSpace = truncatedByLength.lastIndexOf(' ');
+    const truncatedByWord = lastSpace !== -1 ? truncatedByLength.substring(0, lastSpace) : truncatedByLength;
+    const ellipsisText = `${truncatedByWord}...`;
+    return ellipsisText;
+  }, [body]);
 
   return (
     <>
+      <Seo
+        title={title}
+        description={blogDescription}
+        image={image ?? ''}
+      />
       <Typography variant="h4" sx={{ textAlign: 'center' }}>{title}</Typography>
       <div style={{ textAlign: 'center' }}>
         {image && <img src={image} alt={title} height="200" />}
