@@ -2,10 +2,12 @@ import { useMemo } from "react";
 import { PortableText } from "@portabletext/react";
 import { toHTML } from '@portabletext/to-html'
 import { Typography } from "@mui/material";
-import { Seo } from "../../../common/components/Seo";
 import { BlockContent } from "../../../libs/sanity";
-import { useBlogItemQuery } from "../hooks";
+import { Seo } from "../../../common/components/Seo";
+import { BlogProvider } from "../context";
+import { useBlog, useBlogItemQuery } from "../hooks";
 import { ReadablePublishingTime } from "./ReadablePublishingTime";
+import { BlogImage } from "./Image";
 
 type SingleBlogProps = { slug: string; };
 
@@ -25,8 +27,10 @@ const RenderBlog = ({
   publishedAt: string | null;
   body: BlockContent;
 }) => {
+  const { blogContainerRef } = useBlog();
+
   const blogDescription = useMemo(() => {
-    const html = toHTML(body);
+    const html = toHTML(body, { onMissingComponent: false });
     const text = html.replace(/<\/?[^>]+(>|$)/g, "").trim();
     if (text.length < 150) return text;
 
@@ -38,7 +42,7 @@ const RenderBlog = ({
   }, [body]);
 
   return (
-    <>
+    <div ref={blogContainerRef}>
       <Seo
         title={title}
         description={blogDescription}
@@ -49,8 +53,8 @@ const RenderBlog = ({
         {image && <img src={image} alt={title} height="200" />}
       </div>
       <ReadablePublishingTime publishedAt={publishedAt} />
-      <PortableText value={body} />
-    </>
+      <PortableText value={body} components={{ types: { image: BlogImage } }} />
+    </div>
   );
 };
 
@@ -66,5 +70,9 @@ export const SingleBlog = ({ slug }: SingleBlogProps) => {
   if (!data) return <>No article found.</>;
   if (!data.body) return <>Article has no body.</>;
 
-  return <RenderBlog {...data} body={data.body} />;
+  return (
+    <BlogProvider>
+      <RenderBlog {...data} body={data.body} />
+    </BlogProvider>
+  );
 };
