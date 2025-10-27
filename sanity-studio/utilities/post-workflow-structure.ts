@@ -27,13 +27,13 @@ const WORKFLOW_SECTIONS: {
     title: 'Ready Drafts', 
     value: 'ready-drafts', 
     // Filters for 'ready' status AND the document ID starts with 'drafts.'
-    filter: `_type == "${POST_SCHEMA_TYPE}" && status == "ready" && _id in path("drafts.**")`,
+    filter: `_type == "${POST_SCHEMA_TYPE}" && status == "ready" && _originalId in path("drafts.**")`,
   },
   { 
     title: 'Published', 
     value: 'published', 
     // Filters for 'published' status AND the document ID does NOT start with 'drafts.'
-    filter: `_type == "${POST_SCHEMA_TYPE}" && status == "ready" && !(_id in path("drafts.**"))`,
+    filter: `_type == "${POST_SCHEMA_TYPE}" && status == "ready" && !(_originalId in path("drafts.**"))`,
   },
   { 
     title: 'All', 
