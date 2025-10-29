@@ -67,6 +67,36 @@ export default defineType({
       hidden: ({ document }) => document?.status !== 'ready',
     }),
     defineField({
+      name: 'standard',
+      title: 'Standard',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Incomplete', value: 'incomplete' },
+          { title: 'Ok', value: 'ok' },
+          { title: 'Good', value: 'good' },
+          { title: 'Excellent', value: 'excellent' },
+          { title: 'Perfect', value: 'perfect' },
+        ],
+        layout: 'dropdown',
+      },
+      initialValue: 'incomplete',
+      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'editorialChecklist',
+      title: 'Editorial Checklist',
+      type: 'array',
+      of: [
+        // Specify that this array can only contain items of the checklistItem type
+        { type: 'checklistItem' } 
+      ],
+      description: 'Use this checklist to track required steps before publishing.',
+      options: {
+        layout: 'tags',
+      },
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'blockContent',
@@ -79,10 +109,19 @@ export default defineType({
       title: 'title',
       author: 'author.name',
       media: 'mainImage',
+      checklist: 'editorialChecklist',
+      standard: 'standard',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const { author, checklist, standard } = selection;
+      const completed = (checklist || []).filter(() => checklist.isComplete === true).length;
+      const progress = checklist ? `Progress: ${completed}/${checklist.length}` : false;
+      const description = [`Standard: ${standard}`, progress].filter(Boolean).join(' - ');
+      return {
+        ...selection,
+        subtitle: author && `by ${author}`,
+        description,
+      };
     },
   },
 })
