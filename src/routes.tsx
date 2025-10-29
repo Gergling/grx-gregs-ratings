@@ -1,5 +1,6 @@
 import { RouteProps } from "react-router-dom";
 import { AboutPage, BlogListPage, BlogPage, HomePage, TeamPage } from "./pages";
+import { SvgSandboxPage } from "./pages/SvgSandbox";
 
 type RouteTemplate = {
   [key: string]: RouteProps;
@@ -26,6 +27,10 @@ const routes = {
   about: {
     path: "/about",
     element: <AboutPage />,
+  },
+  svgSandbox: {
+    path: "/svg-sandbox",
+    element: <SvgSandboxPage />,
   },
 } as const;
 
