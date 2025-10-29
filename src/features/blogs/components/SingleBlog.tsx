@@ -7,7 +7,7 @@ import { Seo } from "../../../common/components/Seo";
 import { BlogProvider } from "../context";
 import { useBlog, useBlogItemQuery } from "../hooks";
 import { ReadablePublishingTime } from "./ReadablePublishingTime";
-import { BlogImage } from "./Image";
+import { BlogFigure } from "./Figure";
 
 type SingleBlogProps = { slug: string; };
 
@@ -53,7 +53,14 @@ const RenderBlog = ({
         {image && <img src={image} alt={title} height="200" />}
       </div>
       <ReadablePublishingTime publishedAt={publishedAt} />
-      <PortableText value={body} components={{ types: { image: BlogImage } }} />
+      <PortableText
+        value={body}
+        components={{
+          types: {
+            figure: BlogFigure,
+          },
+        }}
+      />
     </div>
   );
 };

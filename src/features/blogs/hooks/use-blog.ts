@@ -10,7 +10,8 @@ export const useBlog = () => {
   const getBlogImageData = useCallback((value: SanityImageSource) => {
     const src = urlBuilder(client).image(value).width(blogElementWidth).fit('max').auto('format').url();
     const { width, height } = getImageDimensions(value);
-    return { src, width, height };
+    const hasCaption = typeof value !== 'string' && 'caption' in value;
+    return { src, width, height, caption: (hasCaption ? value.caption : '') as string };
   }, [blogElementWidth]);
   const blogContainerRef = useRef(null);
   const imgWidth = useElementSize(blogContainerRef, (element) => element.offsetWidth);
