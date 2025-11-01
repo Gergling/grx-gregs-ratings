@@ -1,4 +1,4 @@
-import { useAppTheme } from "@gergling/ui-components";
+import { useTheme } from "@gergling/ui-components";
 import baseTheme from '../config/base-theme.json';
 import type { ITheme } from 'survey-core';
 
@@ -7,7 +7,7 @@ export const useSJSTheme = (): ITheme => {
     colors,
     palette: { mode, ...palette },
     typography: { body1: { fontFamily } }
-  } } = useAppTheme();
+  } } = useTheme();
 
   return {
     ...baseTheme as ITheme,
