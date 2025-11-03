@@ -1,5 +1,8 @@
+import { PageContainer } from "../common/components/styles";
 import { PersonalityType } from "../features/surveys/wrm/components/PersonalityType";
 
 export const SurveyPage = () => {
-  return <PersonalityType />;
+  return <PageContainer>
+    <PersonalityType />
+  </PageContainer>;
 };

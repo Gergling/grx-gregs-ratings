@@ -1,46 +1,66 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { surveyStoreWRM } from "../stores";
-import { Model } from "survey-react-ui";
+import { surveyStoreWRM } from "../stores/wrm-survey-store";
+
+type ProgressMarker = {
+  answered: boolean;
+  current: boolean;
+};
 
 export const useWRMSurvey = () => {
+  const store = surveyStoreWRM();
   const {
-    initialise,
-    setAnswer,
+    answers,
+    navigateNextQuestion,
+    navigatePreviousQuestion,
+    questions,
+    reset,
+    selectedQuestion,
+    selectedQuestionIdx,
+    selectedAnswer,
     setSeed,
-  } = surveyStoreWRM();
+    setSelectedAnswer,
+  } = store;
   const [seed1] = useMemo(() => ([Math.random()]), []);
-  const reset = useCallback(() => {
-    initialise();
+  const initialise = useCallback(() => {
+    reset();
     setSeed(seed1);
-  }, [initialise, seed1, setSeed]);
-  const surveyConfig = useMemo(() => ({
-  }), []);
-  const survey = new Model(surveyConfig);
+  }, [reset, seed1, setSeed]);
 
-  // getInitialScores
-  survey.onCurrentPageChanging.add(function (sender, options) {
-    // Only execute custom logic when moving forward (Next button)
-    if (!options.isNextPage) {
-      return;
-    }
+  const isFirstQuestionSelected = useMemo(
+    () => selectedQuestionIdx === 0,
+    [selectedQuestionIdx]
+  );
+  const isAnswerSelected = useMemo(() => !!selectedAnswer, [selectedAnswer]);
+  const markers: ProgressMarker[] = useMemo(() => {
+    // 9-12 markers, depending on how many questions answered.
+    const markers = [
+      ...answers.map((_, idx) => ({ answered: true, current: selectedQuestionIdx === idx })),
+      ...Array.from({ length: 9 - answers.length }, (_, idx) => ({ answered: false, current: selectedQuestionIdx === idx }))
+    ];
+    return markers;
+  }, [answers, selectedQuestionIdx]);
+  // Give the last marker a dotted line between itself and the previous marker.
+  const lastMarker = false;
 
-    const questionElement = options.oldCurrentPage.elements[0];
-    const questionName = questionElement.name;
-    const answer = sender.getValue(questionName);
-    console.log(answer)
-    setAnswer(answer);
+  useEffect(() => initialise(), [initialise]);
 
-    // options.newCurrentPage = 
-  });
-  survey.onComplete.add(function (sender, options) {
-    const results = sender.data;
-    // The final results will contain the answers and the scores are finalized
-    console.log("FINAL Survey Results:", results);
-    // console.log("FINAL SCORING:", scores);
-
-    // Since showCompletedPage: false, we can display a final message here
-    // document.getElementById("surveyElement").innerHTML = "<div class='text-center text-2xl text-indigo-700 font-bold p-6 bg-indigo-100 rounded-xl shadow-lg'>Quiz Complete! Check the console for final scores and answers.</div>";
-  });
-
-  useEffect(() => reset(), [reset]);
+  useEffect(() => {
+    console.log('store', store)
+  }, [store]);
+  return {
+    navigateNextQuestion,
+    navigatePreviousQuestion,
+    initialise,
+    isAnswerSelected,
+    isFirstQuestionSelected,
+    progress: {
+      markers,
+      last: lastMarker,
+    },
+    questions,
+    reset,
+    selectedQuestion,
+    selectedAnswer,
+    setSelectedAnswer,
+  };
 };
