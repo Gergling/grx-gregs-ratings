@@ -3,6 +3,8 @@ import { ArchetypeKey, QUESTIONS_WRM, WRMQuestion } from "../config";
 import { ArchetypeScores } from "../types";
 import { getInitialScores, getOmittedArchetype } from "../utilities/scoring";
 import { generateQuestion } from "../utilities/generate-question";
+import { getShuffledArray } from "../../../../common/utilities/array";
+import { Seeder } from "../../../../common/types";
 
 type Questions = {
   remaining: WRMQuestion[];
@@ -25,21 +27,23 @@ type State = {
   // };
   questions: Questions;
   scores: ArchetypeScores;
-  seed: number;
+  seeder: Seeder;
   selectedAnswer?: ArchetypeKey;
   selectedQuestion: WRMQuestion;
   selectedQuestionIdx: number;
 };
 
-type StateOp = (state: State) => State;
-
 type Action = {
-  setSeed: (seed: number) => void;
-  setSelectedAnswer: (answer: ArchetypeKey | undefined) => void;
   navigateNextQuestion: () => void;
   navigatePreviousQuestion: () => void;
   reset: () => void;
+  setSeeder: (seeder: Seeder) => void;
+  setSelectedAnswer: (answer: ArchetypeKey | undefined) => void;
 };
+
+type StoreProps = State & Action;
+
+type StateOp = (state: StoreProps) => StoreProps;
 
 // Previous question: reduces idx and therefore changes the selected question.
 // Next question: increases idx and therefore changes the selected question. Generates a new one if it's the last one.
@@ -47,9 +51,9 @@ type Action = {
 // Select an answer: Just selects an answer to the selected question.
 
 const runReducers = (
-  initialState: State,
-  reducers: ((state: State) => State)[],
-): State => reducers.reduce((state, reducer) => reducer(state), initialState);
+  initialState: StoreProps,
+  reducers: StateOp[],
+): StoreProps => reducers.reduce((state, reducer) => reducer(state), initialState);
 
 const updateSelectedQuestion: StateOp = (state) => {
   const { answers, questions: { current }, selectedQuestionIdx } = state;
@@ -77,11 +81,11 @@ const updateSelectedQuestion: StateOp = (state) => {
 };
 
 const chooseBiasedQuestion: StateOp = (state) => {
-  const omittedArchetype = getOmittedArchetype(state.scores, state.seed);
+  const omittedArchetype = getOmittedArchetype(state.scores, state.seeder);
   const {
     remainingQuestions: remaining,
     question: current,
-  } = generateQuestion(state.questions.remaining, omittedArchetype);
+  } = generateQuestion(state.questions.remaining, omittedArchetype, state.seeder);
   return {
     ...state,
     questions: {
@@ -93,21 +97,32 @@ const chooseBiasedQuestion: StateOp = (state) => {
 };
 
 const popRemainingQuestion: StateOp = (state) => {
-  const current = state.questions.remaining.pop();
-
-  if (!current) throw new Error('We have run out of questions.');
+  // Choose an archetype based on what already exists in the answers
+  // We want 3 of each kind, so we should calculate how many against teh answers
+  // Array.from({ length: ARCHETYPE_KEYS.length });
+  const scores = state.answers.reduce((scores, { answer }) => ({
+    ...scores,
+    [answer]: scores[answer] + 1,
+  }), getInitialScores());
+  const [[archetype]] = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  // Choose the first archetype to exceed 3 points or just any archetype.
+  const {
+    remainingQuestions: remaining,
+    question: current,
+  } = generateQuestion(state.questions.remaining, archetype as ArchetypeKey, state.seeder);
 
   return {
     ...state,
     questions: {
       ...state.questions,
       current,
-      remaining: state.questions.remaining,
+      remaining,
     },
   };
 };
 
 const chooseNextQuestion: StateOp = (state) => {
+  // 8 needs to be calculated from the number of archetypes total multiplied by the arbitrary number 3, and we can use >=
   const nextQuestionReducer = state.answers.length > 8
     ? chooseBiasedQuestion
     : popRemainingQuestion;
@@ -117,9 +132,7 @@ const chooseNextQuestion: StateOp = (state) => {
   ]);
 };
 
-const updateScores = (
-  state: State,
-): State => {
+const updateScores: StateOp = (state) => {
   const scores = state.answers.reduce((scores, { answer }) => {
     return {
       ...scores,
@@ -177,95 +190,42 @@ const navigateNextQuestion: StateOp = (state) => {
   });
 };
 
-const getInitialState = (seed: number): State => {
-  const allQuestions = QUESTIONS_WRM.sort(() => seed - 0.5);
+const getInitialState = (seeder: Seeder): State => {
+  const questions = getShuffledArray(QUESTIONS_WRM, seeder);
   const scores = getInitialScores();
-  return chooseNextQuestion({
+  const archetype = getOmittedArchetype(scores, seeder);
+  const {
+    question: current,
+    remainingQuestions: remaining,
+  } = generateQuestion(questions, archetype, seeder);
+  return {
     scores,
-    questions: { current: allQuestions[0], remaining: allQuestions },
+    questions: { current, remaining },
     answers: [],
-    seed,
+    seeder,
     selectedAnswer: undefined,
-    selectedQuestion: allQuestions[0],
-    // selectedQuestionCategory: 'latest',
+    selectedQuestion: current,
     selectedQuestionIdx: 0,
-  });
-  // const selectedQuestion = getSelectedQuestion([], initialState.questions.current, 0, false);
-  // return { ...initialState, selectedQuestion };
+  };
 };
 
-
-export const surveyStoreWRM = create<State & Action>((set, get) => {
-  // const getNextQuestions = (scores: ArchetypeScores, remaining: WRMQuestion[]): Questions => {
-  //   const { answers, seed } = get();
-  //   const questions: Questions = answers.length > 8
-  //     ? getQuestion(scores, seed, remaining)
-  //     : popUpcoming(remaining);
-  //   return questions;
-  // };
-  // const isValidQuestionIdx = (selectedQuestionIdx: number) => {
-  //   const { answers } = get();
-  //   return selectedQuestionIdx >= answers.length;
-  // };
-  const reset = () => {
-    const { seed } = get();
-    const initialState = getInitialState(seed);
-    set(initialState);
-  };
-  const initialState = getInitialState(0);
+export const surveyStoreWRM = create<StoreProps>((set) => {
   return {
-    ...initialState,
-    // answers: [],
-    // questions: { remaining: [] },
-    // scores: getInitialScores(),
-    // seed: 0,
-    // selectedAnswer: undefined,
-    // selectedQuestionIdx: 0,
-
-    // generateNextQuestion: () => {
-    //   const {
-    //     answers,
-    //     questions: { remaining, current: answered },
-    //     scores: oldScores,
-    //     selectedAnswer: answer,
-    //     selectedQuestionIdx: oldSelectedQuestionIdx,
-    //   } = get();
-
-    //   if (!answer) throw new Error('How is there no selected answer at this stage?');
-
-    //   const scores = { ...oldScores, [answer]: oldScores[answer] + 1 };
-    //   const questions: Questions = getNextQuestions(scores, remaining);
-    //   const selectedQuestionIdx = oldSelectedQuestionIdx + 1;
-
-    //   const selectedQuestion = getSelectedQuestion(answers, questions.current, selectedQuestionIdx, isValidQuestionIdx(selectedQuestionIdx));
-
-    //   set({
-    //     answers: [...answers, { question: answered, answer }],
-    //     questions,
-    //     scores,
-    //     selectedAnswer: undefined,
-    //     selectedQuestion,
-    //     selectedQuestionIdx: selectedQuestionIdx + 1,
-    //   });
-    // },
+    ...getInitialState(() => 0),
     navigatePreviousQuestion: () => {
       set(navigatePreviousQuestion);
     },
     navigateNextQuestion: () => {
       set(navigateNextQuestion);
     },
-    reset,
+    reset: () => set((store) => {
+      const state = getInitialState(store.seeder);
+      return {
+        ...store,
+        ...state,
+      };
+    }),
     setSelectedAnswer: (selectedAnswer) => set({ selectedAnswer }),
-    // setSelectedQuestionIdx: (selectedQuestionIdx) => {
-    //   if (selectedQuestionIdx <= 0) return;
-
-    //   const { answers, questions } = get();
-    //   const isValidIdx = isValidQuestionIdx(selectedQuestionIdx);
-    //   const selectedAnswer = isValidIdx ? undefined : answers[selectedQuestionIdx].answer;
-    //   const selectedQuestion = getSelectedQuestion(answers, questions.current, selectedQuestionIdx, isValidIdx);
-
-    //   set({ selectedAnswer, selectedQuestion, selectedQuestionIdx });
-    // },
-    setSeed: (seed) => set({ seed }),
+    setSeeder: (seeder) => set({ seeder }),
   };
 });

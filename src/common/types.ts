@@ -6,3 +6,5 @@ export interface SeoProps {
   image?: string;
   twitterHandle?: string;
 }
+
+export type Seeder = () => number;

@@ -1,3 +1,4 @@
+import { Seeder } from "../../../../common/types";
 import { ARCHETYPE_KEYS, ArchetypeKey } from "../config";
 import { ArchetypeScores, ScoringCategoryProps } from "../types";
 
@@ -60,13 +61,8 @@ export const getScoringCategory = (scores: ArchetypeScores): ScoringCategoryProp
   };
 };
 
-// const getRandomArchetype = (archetypes: ArchetypeKey[]) => {
-//   const idx = Math.floor(Math.random() * archetypes.length);
-//   return archetypes[idx];
-// };
-
-export const getOmittedArchetype = (scores: ArchetypeScores, seed: number): ArchetypeKey => {
-  const randomIdx = Math.floor((seed * ARCHETYPE_KEYS.length) % ARCHETYPE_KEYS.length);
+export const getOmittedArchetype = (scores: ArchetypeScores, seeder: Seeder): ArchetypeKey => {
+  const randomIdx = Math.floor((seeder() * ARCHETYPE_KEYS.length) % ARCHETYPE_KEYS.length);
   const category = getScoringCategory(scores);
   const { type } = category;
   switch (type) {

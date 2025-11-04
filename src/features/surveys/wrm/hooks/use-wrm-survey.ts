@@ -13,14 +13,13 @@ export const useWRMSurvey = () => {
     selectedQuestion,
     selectedQuestionIdx,
     selectedAnswer,
-    setSeed,
+    setSeeder,
     setSelectedAnswer,
   } = store;
-  const [seed1] = useMemo(() => ([Math.random()]), []);
   const initialise = useCallback(() => {
+    setSeeder(() => Math.random());
     reset();
-    setSeed(seed1);
-  }, [reset, seed1, setSeed]);
+  }, [reset, setSeeder]);
 
   const isFirstQuestionSelected = useMemo(
     () => selectedQuestionIdx === 0,
