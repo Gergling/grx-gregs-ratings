@@ -12,6 +12,7 @@ export const PersonalityType = () => {
     isFirstQuestionSelected,
     navigateNextQuestion,
     navigatePreviousQuestion,
+    progress,
     selectedAnswer,
     selectedQuestion,
     setSelectedAnswer,
@@ -25,6 +26,7 @@ export const PersonalityType = () => {
           question={selectedQuestion}
           next={navigateNextQuestion}
           previous={navigatePreviousQuestion}
+          progress={progress}
           selectedAnswer={selectedAnswer}
           setSelectedAnswer={setSelectedAnswer}
         />

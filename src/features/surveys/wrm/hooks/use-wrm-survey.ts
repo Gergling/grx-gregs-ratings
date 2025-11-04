@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { surveyStoreWRM } from "../stores/wrm-survey-store";
-
-type ProgressMarker = {
-  answered: boolean;
-  current: boolean;
-};
+import { ProgressMarker } from "../types";
 
 export const useWRMSurvey = () => {
   const store = surveyStoreWRM();
@@ -34,9 +30,9 @@ export const useWRMSurvey = () => {
   const markers: ProgressMarker[] = useMemo(() => {
     // 9-12 markers, depending on how many questions answered.
     const markers = [
-      ...answers.map((_, idx) => ({ answered: true, current: selectedQuestionIdx === idx })),
-      ...Array.from({ length: 9 - answers.length }, (_, idx) => ({ answered: false, current: selectedQuestionIdx === idx }))
-    ];
+      ...answers.map(() => ({ answered: true, current: false })),
+      ...Array.from({ length: 9 - answers.length }, () => ({ answered: false, current: false }))
+    ].map((props, idx) => ({ ...props, current: selectedQuestionIdx === idx }));
     return markers;
   }, [answers, selectedQuestionIdx]);
   // Give the last marker a dotted line between itself and the previous marker.

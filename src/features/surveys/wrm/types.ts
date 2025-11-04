@@ -14,3 +14,8 @@ export type ScoringCategoryProps
   | { type: 'lead'; trailer: ArchetypeScore; score: number; }
   | { type: 'trailer'; lead: ArchetypeScore; score: number; }
   | { type: 'done'; trailer: ArchetypeScore; lead: ArchetypeScore; other: ArchetypeScore; };
+
+export type ProgressMarker = {
+  answered: boolean;
+  current: boolean;
+};
