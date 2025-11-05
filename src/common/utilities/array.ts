@@ -1,7 +1,7 @@
 import { Seeder } from "../types";
 
-export const getRandomArrayElement = <T>(arr: T[], seed: number) => {
-  const index = Math.floor((seed * arr.length) % arr.length);
+export const getRandomArrayElement = <T>(arr: T[], seeder: Seeder) => {
+  const index = Math.floor((seeder() * arr.length) % arr.length);
   return arr[index];
 };
 
