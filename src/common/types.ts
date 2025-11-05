@@ -8,3 +8,5 @@ export interface SeoProps {
 }
 
 export type Seeder = () => number;
+
+export type StoreOp<T> = (state: T) => T;

@@ -1,61 +1,18 @@
 import { create } from "zustand";
-import { ArchetypeKey, QUESTIONS_WRM, WRMQuestion } from "../config";
-import { ArchetypeScores } from "../types";
+import { ArchetypeKey, QUESTIONS_WRM } from "../config";
+import { WRMState, WRMStoreOp, WRMStoreProps } from "../types";
 import { getInitialScores, getOmittedArchetype } from "../utilities/scoring";
 import { generateQuestion } from "../utilities/generate-question";
 import { getShuffledArray } from "../../../../common/utilities/array";
 import { Seeder } from "../../../../common/types";
-
-type Questions = {
-  remaining: WRMQuestion[];
-  current: WRMQuestion;
-};
-
-type Answer = {
-  question: WRMQuestion;
-  answer: ArchetypeKey;
-};
-
-type State = {
-  answers: Answer[];
-  // navigation: {
-  //   isLast: boolean;
-  //   isFirst: boolean;
-  //   idx: number;
-  //   question: WRMQuestion;
-  //   answer?: ArchetypeKey;
-  // };
-  questions: Questions;
-  scores: ArchetypeScores;
-  seeder: Seeder;
-  selectedAnswer?: ArchetypeKey;
-  selectedQuestion: WRMQuestion;
-  selectedQuestionIdx: number;
-};
-
-type Action = {
-  navigateNextQuestion: () => void;
-  navigatePreviousQuestion: () => void;
-  reset: () => void;
-  setSeeder: (seeder: Seeder) => void;
-  setSelectedAnswer: (answer: ArchetypeKey | undefined) => void;
-};
-
-type StoreProps = State & Action;
-
-type StateOp = (state: StoreProps) => StoreProps;
+import { runReducers } from "../../../../common/utilities/store";
 
 // Previous question: reduces idx and therefore changes the selected question.
 // Next question: increases idx and therefore changes the selected question. Generates a new one if it's the last one.
 // Set seed: Just sets the seed.
 // Select an answer: Just selects an answer to the selected question.
 
-const runReducers = (
-  initialState: StoreProps,
-  reducers: StateOp[],
-): StoreProps => reducers.reduce((state, reducer) => reducer(state), initialState);
-
-const updateSelectedQuestion: StateOp = (state) => {
+const updateSelectedQuestion: WRMStoreOp = (state) => {
   const { answers, questions: { current }, selectedQuestionIdx } = state;
   const isInRange = selectedQuestionIdx >= answers.length;
   const selectedQuestion = isInRange
@@ -80,7 +37,7 @@ const updateSelectedQuestion: StateOp = (state) => {
   };
 };
 
-const chooseBiasedQuestion: StateOp = (state) => {
+const chooseBiasedQuestion: WRMStoreOp = (state) => {
   const omittedArchetype = getOmittedArchetype(state.scores, state.seeder);
   const {
     remainingQuestions: remaining,
@@ -96,7 +53,7 @@ const chooseBiasedQuestion: StateOp = (state) => {
   };
 };
 
-const popRemainingQuestion: StateOp = (state) => {
+const popRemainingQuestion: WRMStoreOp = (state) => {
   // Choose an archetype based on what already exists in the answers
   // We want 3 of each kind, so we should calculate how many against teh answers
   // Array.from({ length: ARCHETYPE_KEYS.length });
@@ -121,7 +78,7 @@ const popRemainingQuestion: StateOp = (state) => {
   };
 };
 
-const chooseNextQuestion: StateOp = (state) => {
+const chooseNextQuestion: WRMStoreOp = (state) => {
   // 8 needs to be calculated from the number of archetypes total multiplied by the arbitrary number 3, and we can use >=
   const nextQuestionReducer = state.answers.length > 8
     ? chooseBiasedQuestion
@@ -132,7 +89,7 @@ const chooseNextQuestion: StateOp = (state) => {
   ]);
 };
 
-const updateScores: StateOp = (state) => {
+const updateScores: WRMStoreOp = (state) => {
   const scores = state.answers.reduce((scores, { answer }) => {
     return {
       ...scores,
@@ -146,7 +103,7 @@ const updateScores: StateOp = (state) => {
   };
 };
 
-const answerQuestion: StateOp = (state) => {
+const answerQuestion: WRMStoreOp = (state) => {
   return runReducers(state, [
     (state) => {
       if (!state.selectedAnswer) throw new Error('How is there no selected answer at this stage?');
@@ -169,7 +126,7 @@ const answerQuestion: StateOp = (state) => {
   ]);
 };
 
-const navigatePreviousQuestion: StateOp = (state) => {
+const navigatePreviousQuestion: WRMStoreOp = (state) => {
   const { selectedQuestionIdx } = state;
   if (selectedQuestionIdx <= 0) return state;
   return updateSelectedQuestion({
@@ -177,7 +134,7 @@ const navigatePreviousQuestion: StateOp = (state) => {
     selectedQuestionIdx: selectedQuestionIdx - 1,
   });
 };
-const navigateNextQuestion: StateOp = (state) => {
+const navigateNextQuestion: WRMStoreOp = (state) => {
   const { selectedQuestionIdx: oldSelectedQuestionIdx } = state;
   const isOutsideRange = oldSelectedQuestionIdx >= state.answers.length;
   const selectedQuestionIdx = oldSelectedQuestionIdx + 1;
@@ -190,7 +147,7 @@ const navigateNextQuestion: StateOp = (state) => {
   });
 };
 
-const getInitialState = (seeder: Seeder): State => {
+const getInitialState = (seeder: Seeder): WRMState => {
   const questions = getShuffledArray(QUESTIONS_WRM, seeder);
   const scores = getInitialScores();
   const archetype = getOmittedArchetype(scores, seeder);
@@ -209,7 +166,7 @@ const getInitialState = (seeder: Seeder): State => {
   };
 };
 
-export const surveyStoreWRM = create<StoreProps>((set) => {
+export const surveyStoreWRM = create<WRMStoreProps>((set) => {
   return {
     ...getInitialState(() => 0),
     navigatePreviousQuestion: () => {
