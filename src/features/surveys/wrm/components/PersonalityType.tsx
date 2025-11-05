@@ -2,10 +2,6 @@ import { useWRMSurvey } from '../hooks/use-wrm-survey';
 import { Pane } from '@gergling/ui-components';
 import { RadioQuestion } from './RadioQuestion';
 
-// Choose a survey: e.g. personality type.
-// Get the questions and generate a model
-// generateInitialQuestions
-
 // TODO: We'll probably abstract this.
 export const PersonalityType = () => {
   const {
