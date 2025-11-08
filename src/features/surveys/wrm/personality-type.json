@@ -5,8 +5,8 @@
       "name": "q1_printer_jam",
       "title": "You have a paper jam in the office printer.",
       "choices": [
-        { "value": "warrior", "text": "Call the IT department and report the broken equipment, requesting that they fix it." },
-        { "value": "rogue", "text": "Send the document to another department's printer and claim it's for an urgent meeting." },
+        { "value": "warrior", "text": "Call the IT department and report the broken equipment, requesting that they fix it. Nod to yourself in a self-satisfied manner, knowing you have resolved the problem in accordance with technical protocol." },
+        { "value": "rogue", "text": "Send the document to another department's printer and claim it's for an urgent meeting. Don't forget to compliment their accessorisation." },
         { "value": "mage", "text": "Carefully open the printer, remove the jammed paper, and re-feed it into the machine in a manner that re-educates the device about its purpose." }
       ]
     },
