@@ -1,4 +1,5 @@
-import { Seeder, StoreOp } from "../../../common/types";
+import { Seeder } from "../../../common/types";
+import { SurveyProgressProps } from "../common/types";
 import { ArchetypeKey, WRMQuestion } from "./config";
 
 export type ArchetypeScores = {
@@ -16,53 +17,58 @@ export type ScoringCategoryProps
   | { type: 'trailer'; lead: ArchetypeScore; score: number; }
   | { type: 'done'; trailer: ArchetypeScore; lead: ArchetypeScore; other: ArchetypeScore; };
 
-export type ProgressMarker = {
-  answered: boolean;
-  current: boolean;
-};
-
-export type WRMStoreQuestions = {
-  remaining: WRMQuestion[];
-  current: WRMQuestion;
-};
-
 export type WRMStoreAnswer = {
   question: WRMQuestion;
   answer: ArchetypeKey;
 };
 
 export type WRMState = {
+  // Answers are gathered.
   answers: WRMStoreAnswer[];
-  // TODO: Navigation properties can/should probably be grouped together.
-  // This will replace the selected... properties.
-  // navigation: {
-  //   isLast: boolean;
-  //   isFirst: boolean;
-  //   idx: number;
-  //   question: WRMQuestion;
-  //   answer?: ArchetypeKey;
-  // };
-  // This is explicitly for the last question and answer.
-  // last: {
-  //   question: WRMQuestion;
-  //   answer?: ArchetypeKey;
-  // };
-  questions: WRMStoreQuestions;
-  scores: ArchetypeScores;
+  // Last question is chosen.
+  lastQuestion: WRMQuestion;
+  // Remaining questions are updated.
+  questions: WRMQuestion[];
+  // Updated by navigation.
+  page: number;
+  // Updated once and used for anything which may require randomisation.
   seeder: Seeder;
-  selectedAnswer?: ArchetypeKey;
-  selectedQuestion: WRMQuestion;
-  selectedQuestionIdx: number;
 };
 
 type Action = {
-  navigateNextQuestion: () => void;
-  navigatePreviousQuestion: () => void;
+  navigateQuestion: (page: number, answer?: ArchetypeKey) => void;
   reset: () => void;
   setSeeder: (seeder: Seeder) => void;
-  setSelectedAnswer: (answer: ArchetypeKey | undefined) => void;
 };
 
 export type WRMStoreProps = WRMState & Action;
 
-export type WRMStoreOp = StoreOp<WRMStoreProps>;
+export type WRMSurveyProps = {
+  // Current answer state.
+  selectedAnswer?: ArchetypeKey;
+  setSelectedAnswer: (answer: ArchetypeKey) => void;
+
+  // Question navigation state.
+  navigateAnyQuestion: (page: number) => void;
+  navigatePreviousQuestion: () => void;
+  navigateNextQuestion: () => void;
+
+  // Computed from current selected answer.
+  isAnswerSelected: boolean;
+
+  // Computed from page number and current selected answer.
+  navigation: {
+    isLast: boolean;
+    isFirst: boolean;
+    question: WRMQuestion;
+  };
+  
+  // Computed from answers.
+  scores: ArchetypeScores;
+
+  // Computed from last question and scores.
+  phase: 'initial' | 'adaptive' | 'final' | 'done';
+
+  // Computed from page number, answers and phase.
+  progress: SurveyProgressProps;
+};

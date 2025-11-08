@@ -5,4 +5,4 @@ export const getRandomArrayElement = <T>(arr: T[], seeder: Seeder) => {
   return arr[index];
 };
 
-export const getShuffledArray = <T>(arr: T[], seeder: Seeder): T[] => arr.sort(() => seeder() - 0.5);
+export const getShuffledArray = <T>(arr: T[], seeder: Seeder): T[] => [...arr].sort(() => seeder() - 0.5);

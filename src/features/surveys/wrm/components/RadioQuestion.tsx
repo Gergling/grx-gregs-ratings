@@ -1,44 +1,15 @@
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { WRMQuestion } from "../config";
-import { ProgressMarker } from "../types";
-import { CheckCircle, CheckCircleOutline, Help, HelpOutline } from "@mui/icons-material";
-import { useTheme } from "@gergling/ui-components";
-import { ProgressMarkerDivider } from "./RadioQuestion.style";
-
-const ProgressMarkerIcon = ({
-  answered,
-  current,
-}: ProgressMarker) => {
-  if (answered) {
-    if (current) {
-      return <CheckCircle />;
-    }
-
-    return <CheckCircleOutline />;
-  }
-
-  if (current) {
-    return <Help />;
-  }
-
-  return <HelpOutline />;
-};
-
-const ProgressMarkerComponent = (props: ProgressMarker) => <>
-  <ProgressMarkerDivider />
-  <ProgressMarkerIcon {...props} />
-</>;
+import { SurveyProgressProps } from "../../common/types";
+import { SurveyProgress } from "../../common/components/Progress";
 
 type RadioQuestionProps<T> = {
   isFirstQuestion: boolean;
   next: () => void;
   previous: () => void;
-  progress: {
-    markers: ProgressMarker[];
-    last: boolean;
-  },
+  progress: SurveyProgressProps,
   question: WRMQuestion;
-  selectedAnswer: T;
+  selectedAnswer: T | undefined;
   setSelectedAnswer: (answer: T) => void;
 };
 
@@ -59,20 +30,9 @@ export const RadioQuestion = <T,>({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedAnswer(event.target.value as T);
   };
-  const { theme: { colors: { primary } } } = useTheme();
   return (
     <FormControl>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '0.1rem',
-        color: primary.main,
-        alignItems: 'center',
-      }}>
-        {markers.map((props, index) => <ProgressMarkerComponent key={index} {...props} />)}
-        <ProgressMarkerDivider partial={true} />
-        <ProgressMarkerIcon current={false} answered={false} />
-      </div>
+      <SurveyProgress markers={markers} last={true} />
       <FormLabel id="demo-radio-buttons-group-label">
         {title}
       </FormLabel>

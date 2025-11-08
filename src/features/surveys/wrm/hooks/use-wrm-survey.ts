@@ -1,61 +1,81 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { surveyStoreWRM } from "../stores/wrm-survey-store";
-import { ProgressMarker } from "../types";
+import { TOTAL_INITIAL_QUESTIONS } from "../constants";
+import { useSurveyProgress } from "../../common/hooks/use-progress";
+import { ArchetypeKey } from "../config";
+import { WRMState, WRMSurveyProps } from "../types";
+import { getNavigation, getPhase, getScores } from "../utilities";
 
-export const useWRMSurvey = () => {
+export const useWRMSurvey = (): WRMSurveyProps & {
+  answers: WRMState['answers'];
+} => {
   const store = surveyStoreWRM();
   const {
     answers,
-    navigateNextQuestion,
-    navigatePreviousQuestion,
-    questions,
+    lastQuestion,
+    navigateQuestion,
+    page,
     reset,
-    selectedQuestion,
-    selectedQuestionIdx,
-    selectedAnswer,
     setSeeder,
-    setSelectedAnswer,
   } = store;
+  const [selectedAnswer, setSelectedAnswer] = useState<ArchetypeKey>();
+
   const initialise = useCallback(() => {
     setSeeder(() => Math.random());
     reset();
   }, [reset, setSeeder]);
 
-  const isFirstQuestionSelected = useMemo(
-    () => selectedQuestionIdx === 0,
-    [selectedQuestionIdx]
+  const navigation = useMemo(
+    (): WRMSurveyProps['navigation'] => getNavigation(answers, lastQuestion, page),
+    [answers, lastQuestion, page]
   );
-  const isAnswerSelected = useMemo(() => !!selectedAnswer, [selectedAnswer]);
-  const markers: ProgressMarker[] = useMemo(() => {
-    // 9-12 markers, depending on how many questions answered.
-    const markers = [
-      ...answers.map(() => ({ answered: true, current: false })),
-      ...Array.from({ length: 9 - answers.length }, () => ({ answered: false, current: false }))
-    ].map((props, idx) => ({ ...props, current: selectedQuestionIdx === idx }));
-    return markers;
-  }, [answers, selectedQuestionIdx]);
-  // Give the last marker a dotted line between itself and the previous marker.
-  const lastMarker = false;
+  const scores = useMemo(
+    () => getScores(answers),
+    [answers]
+  );
+  const phase = useMemo(
+    () => getPhase(answers, navigation.question.choices, scores),
+    [answers, navigation.question.choices, scores]
+  );
+
+  const isAnswerSelected = useMemo(
+    () => !!selectedAnswer,
+    [selectedAnswer]
+  );
+  const lastMarker = useMemo(() => phase !== 'final', [phase]);
+  const progress = useSurveyProgress(answers.length, page, TOTAL_INITIAL_QUESTIONS, lastMarker);
+
+  const navigateAnyQuestion = useCallback((page: number) => {
+    navigateQuestion(page, selectedAnswer);
+  }, [navigateQuestion, selectedAnswer]);
+
+  const navigatePreviousQuestion = useCallback(() => {
+    navigateQuestion(page - 1, selectedAnswer);
+  }, [navigateQuestion, page, selectedAnswer]);
+
+  const navigateNextQuestion = useCallback(() => {
+    navigateQuestion(page + 1, selectedAnswer);
+  }, [navigateQuestion, page, selectedAnswer]);
 
   useEffect(() => initialise(), [initialise]);
+  useEffect(
+    () => setSelectedAnswer(answers[page]?.answer),
+    [answers, page, setSelectedAnswer]
+  );
 
-  useEffect(() => {
-    console.log('store', store)
-  }, [store]);
   return {
+    isAnswerSelected,
+    navigateAnyQuestion,
     navigateNextQuestion,
     navigatePreviousQuestion,
-    initialise,
-    isAnswerSelected,
-    isFirstQuestionSelected,
-    progress: {
-      markers,
-      last: lastMarker,
-    },
-    questions,
-    reset,
-    selectedQuestion,
+    navigation,
+    progress,
+    phase,
+    scores,
     selectedAnswer,
     setSelectedAnswer,
+
+    // For testing:
+    answers,
   };
 };

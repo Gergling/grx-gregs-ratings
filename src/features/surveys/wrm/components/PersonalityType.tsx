@@ -5,21 +5,21 @@ import { RadioQuestion } from './RadioQuestion';
 // TODO: We'll probably abstract this.
 export const PersonalityType = () => {
   const {
-    isFirstQuestionSelected,
+    answers,
     navigateNextQuestion,
     navigatePreviousQuestion,
+    navigation,
     progress,
     selectedAnswer,
-    selectedQuestion,
     setSelectedAnswer,
   } = useWRMSurvey();
 
   return <div>
     <Pane>
-      {selectedQuestion
+      {true
         ? <RadioQuestion
-          isFirstQuestion={isFirstQuestionSelected}
-          question={selectedQuestion}
+          isFirstQuestion={navigation.isFirst}
+          question={navigation.question}
           next={navigateNextQuestion}
           previous={navigatePreviousQuestion}
           progress={progress}
@@ -29,5 +29,8 @@ export const PersonalityType = () => {
         : 'No question selected'
       }
     </Pane>
+    <ul>
+      {answers.map(({ answer }, idx) => <div key={idx}>{idx}: {answer}</div>)}
+    </ul>
   </div>
 };

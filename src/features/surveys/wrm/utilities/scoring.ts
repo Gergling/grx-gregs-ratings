@@ -1,6 +1,6 @@
 import { Seeder } from "../../../../common/types";
 import { ARCHETYPE_KEYS, ArchetypeKey } from "../config";
-import { ArchetypeScores, ScoringCategoryProps } from "../types";
+import { ArchetypeScores, ScoringCategoryProps, WRMStoreAnswer } from "../types";
 
 export const getInitialScores = () => ARCHETYPE_KEYS.reduce((scores, archetypeKey) => ({
   ...scores,
@@ -9,6 +9,18 @@ export const getInitialScores = () => ARCHETYPE_KEYS.reduce((scores, archetypeKe
 
 const getArchetype = (score: number, scores: ArchetypeScores) =>
   ARCHETYPE_KEYS.find((archetypeKey) => scores[archetypeKey] === score);
+
+export const getHighestScoringArchetype = (
+  scores: ArchetypeScores
+): ArchetypeKey => {
+  const [[archetype]] = Object
+    .entries(scores)
+    .sort(([keyA, scoreA], [keyB, scoreB]) => {
+      if (scoreB !== scoreA) return scoreB - scoreA;
+      return keyA.localeCompare(keyB); // Deterministic sort for ties
+    });
+  return archetype as ArchetypeKey;
+};
 
 export const getScoringCategory = (scores: ArchetypeScores): ScoringCategoryProps => {
   const scoreList = ARCHETYPE_KEYS.map((archetypeKey) => scores[archetypeKey]);
@@ -61,7 +73,7 @@ export const getScoringCategory = (scores: ArchetypeScores): ScoringCategoryProp
   };
 };
 
-export const getOmittedArchetype = (scores: ArchetypeScores, seeder: Seeder): ArchetypeKey => {
+export const getAdaptiveOmittedArchetype = (scores: ArchetypeScores, seeder: Seeder): ArchetypeKey => {
   const randomIdx = Math.floor((seeder() * ARCHETYPE_KEYS.length) % ARCHETYPE_KEYS.length);
   const category = getScoringCategory(scores);
   const { type } = category;
@@ -74,13 +86,24 @@ export const getOmittedArchetype = (scores: ArchetypeScores, seeder: Seeder): Ar
       return category.trailer.key;
     case 'trailer':
       // Discern the difference between the lead and trailing scores.
-      const { lead: { key: archetype, score: trailerScore }, score: leadScore } = category;
+      const { lead: { key: leadArchetype, score: leadScore }, score: trailerScore } = category;
       const difference = leadScore - trailerScore;
       // Omit the lead.
-      if (difference > 1) return archetype;
+      if (difference > 1) return leadArchetype;
       // Omit a random trailer.
-      return ARCHETYPE_KEYS.filter((archetypeKey) => archetypeKey !== archetype)[randomIdx];
+      const trailers = ARCHETYPE_KEYS.filter((archetypeKey) => archetypeKey !== leadArchetype);
+      return trailers[Math.floor(seeder() * trailers.length)];
     case 'done':
-      throw new Error('getOmittedArchetype is not for running against a completed test.');
+      throw new Error('getAdaptiveOmittedArchetype is not for running against a completed test.');
   }
 };
+
+export const getScores = (
+  answers: WRMStoreAnswer[]
+): ArchetypeScores => answers.reduce(
+  (scores, { answer }) => ({
+    ...scores,
+    [answer]: scores[answer] + 1,
+  }),
+  getInitialScores()
+);
