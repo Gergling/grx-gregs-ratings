@@ -12,3 +12,11 @@ export const SurveyProgressMarkerDivider = styled.div<{ partial?: boolean; }>`
     display: none;
   }
 `;
+
+export const StyledSurveyProgress = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.1rem;
+  color: ${({ theme: { colors: { primary } } }) => primary.main};
+  align-items: center;
+`;

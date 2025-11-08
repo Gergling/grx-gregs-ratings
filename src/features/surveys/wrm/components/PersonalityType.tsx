@@ -1,11 +1,12 @@
 import { useWRMSurvey } from '../hooks/use-wrm-survey';
 import { Pane } from '@gergling/ui-components';
-import { RadioQuestion } from './RadioQuestion';
+import { SurveyControl } from '../../common/components/Control';
+import { SurveyProgress } from '../../common/components/Progress';
+import { RadioGroup } from '../../common/components/RadioGroup';
+import { useMemo } from 'react';
 
-// TODO: We'll probably abstract this.
 export const PersonalityType = () => {
   const {
-    answers,
     navigateNextQuestion,
     navigatePreviousQuestion,
     navigation,
@@ -14,23 +15,25 @@ export const PersonalityType = () => {
     setSelectedAnswer,
   } = useWRMSurvey();
 
-  return <div>
-    <Pane>
-      {true
-        ? <RadioQuestion
-          isFirstQuestion={navigation.isFirst}
-          question={navigation.question}
-          next={navigateNextQuestion}
-          previous={navigatePreviousQuestion}
-          progress={progress}
-          selectedAnswer={selectedAnswer}
-          setSelectedAnswer={setSelectedAnswer}
-        />
-        : 'No question selected'
-      }
-    </Pane>
-    <ul>
-      {answers.map(({ answer }, idx) => <div key={idx}>{idx}: {answer}</div>)}
-    </ul>
-  </div>
+  const options = useMemo(
+    () => navigation.question.choices.map(({ text, ...props }) => ({ label: text, ...props })),
+    [navigation.question.choices]
+  );
+
+  return <Pane>
+    <SurveyProgress {...progress} />
+    <SurveyControl
+      label={navigation.question.title}
+      handleNext={navigateNextQuestion}
+      handlePrevious={navigatePreviousQuestion}
+      isNextEnabled={!!selectedAnswer}
+      isPreviousEnabled={!navigation.isFirst}
+    >
+      <RadioGroup
+        options={options}
+        selectedAnswer={selectedAnswer}
+        setSelectedAnswer={setSelectedAnswer}
+      />
+    </SurveyControl>
+  </Pane>
 };

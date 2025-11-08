@@ -1,7 +1,6 @@
-import { useTheme } from "@gergling/ui-components";
 import { CheckCircle, CheckCircleOutline, Help, HelpOutline } from "@mui/icons-material";
 import { SurveyProgressProps, SurveyProgressMarker } from "../types";
-import { SurveyProgressMarkerDivider } from "./Progress.style";
+import { StyledSurveyProgress, SurveyProgressMarkerDivider } from "./Progress.style";
 
 const SurveyProgressMarkerIcon = ({
   answered,
@@ -22,20 +21,15 @@ const SurveyProgressMarkerIcon = ({
   return <HelpOutline />;
 };
 
+// This can click through to a specific page.
+// Will require a flexbox.
 const SurveyProgressMarkerComponent = (props: SurveyProgressMarker) => <>
   <SurveyProgressMarkerDivider />
   <SurveyProgressMarkerIcon {...props} />
 </>;
 
 export const SurveyProgress = ({ last, markers }: Omit<SurveyProgressProps, 'last'> & Partial<SurveyProgressProps>) => {
-  const { theme: { colors: { primary } } } = useTheme();
-  return <div style={{
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '0.1rem',
-    color: primary.main,
-    alignItems: 'center',
-  }}>
+  return <StyledSurveyProgress>
     {markers.map((props, index) => (
       <SurveyProgressMarkerComponent key={index} {...props} />
     ))}
@@ -44,5 +38,5 @@ export const SurveyProgress = ({ last, markers }: Omit<SurveyProgressProps, 'las
       <SurveyProgressMarkerDivider partial={true} />
       <SurveyProgressMarkerIcon current={false} answered={false} />
     </>}
-  </div>
+  </StyledSurveyProgress>
 };
