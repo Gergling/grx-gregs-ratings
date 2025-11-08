@@ -19,6 +19,7 @@ describe('navigateQuestionFactory', () => {
   });
 
   it('should navigate to a previous page and update the answer', () => {
+    const generateQuestionSpy = vi.spyOn(questionUtils, 'generateQuestion');
     const answers = mockAnswers(3); // All answers are 'mage'
     const initialState = mockStore({ answers, page: 2 });
 
@@ -32,6 +33,25 @@ describe('navigateQuestionFactory', () => {
     // Answer for page 2 should be changed to rogue.
     expect(newState.answers[2].answer).toBe('rogue');
     expect(newState.answers.length).toBe(3);
+    expect(generateQuestionSpy).not.toHaveBeenCalled();
+  });
+
+  it('should navigate to the next (not last) page and update the answer', () => {
+    const generateQuestionSpy = vi.spyOn(questionUtils, 'generateQuestion');
+    const initialState = mockStore({
+      answers: mockAnswers(3), // We are on page 3 of 5
+      page: 3,
+      questions: [mockQuestion(4), mockQuestion(5)], // More questions available
+      lastQuestion: mockQuestion(3),
+    });
+
+    // From page 3, answer the question and navigate to page 4
+    const navigate = navigateQuestionFactory(4, 'warrior');
+    const newState = navigate(initialState);
+
+    expect(newState.page).toBe(4);
+    expect(newState.answers[3].answer).toBe('warrior');
+    expect(generateQuestionSpy).toHaveBeenCalled();
   });
 
   it('should navigate to the next (last) page and generate a new question', () => {
