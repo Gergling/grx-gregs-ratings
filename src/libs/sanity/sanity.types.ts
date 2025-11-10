@@ -13,58 +13,6 @@
  */
 
 // Source: schema.json
-export type ChecklistItem = {
-  _type: "checklistItem";
-  task: string;
-  isComplete?: boolean;
-};
-
-export type Figure = {
-  _type: "figure";
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-  };
-  media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  alt: string;
-  caption?: string;
-};
-
-export type BlockContent = Array<{
-  children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }>;
-  style?: "normal" | "small" | "h1" | "h2" | "h3" | "h4" | "blockquote";
-  listItem?: "bullet";
-  markDefs?: Array<{
-    href?: string;
-    _type: "link";
-    _key: string;
-  }>;
-  level?: number;
-  _type: "block";
-  _key: string;
-} | {
-  _key: string;
-} & Figure>;
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  description?: string;
-};
-
 export type Post = {
   _id: string;
   _type: "post";
@@ -104,8 +52,106 @@ export type Post = {
   editorialChecklist?: Array<{
     _key: string;
   } & ChecklistItem>;
-  body?: BlockContent;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    _key: string;
+  } & Accordion | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    caption?: string;
+    _type: "figure";
+    _key: string;
+  } | {
+    _key: string;
+  } & Microform>;
 };
+
+export type Microform = {
+  _type: "microform";
+  formType: "no";
+  label: string;
+  completionText: string;
+};
+
+export type Figure = {
+  _type: "figure";
+  asset?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+  };
+  media?: unknown;
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt: string;
+  caption?: string;
+};
+
+export type ChecklistItem = {
+  _type: "checklistItem";
+  task: string;
+  isComplete?: boolean;
+};
+
+export type Category = {
+  _id: string;
+  _type: "category";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  description?: string;
+};
+
+export type BlockContent = Array<{
+  children?: Array<{
+    marks?: Array<string>;
+    text?: string;
+    _type: "span";
+    _key: string;
+  }>;
+  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+  listItem?: "bullet";
+  markDefs?: Array<{
+    href?: string;
+    _type: "link";
+    _key: string;
+  }>;
+  level?: number;
+  _type: "block";
+  _key: string;
+} | {
+  _key: string;
+} & Accordion | {
+  _key: string;
+} & Figure | {
+  _key: string;
+} & Microform>;
 
 export type Author = {
   _id: string;
@@ -145,6 +191,13 @@ export type Author = {
     _type: "block";
     _key: string;
   }>;
+};
+
+export type Accordion = {
+  _type: "accordion";
+  headerText: string;
+  hiddenContent: BlockContent;
+  initialState?: "closed" | "open";
 };
 
 export type SanityImagePaletteSwatch = {
@@ -265,7 +318,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = ChecklistItem | Figure | BlockContent | Category | Post | Author | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Post | Microform | Figure | ChecklistItem | Category | BlockContent | Author | Accordion | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../src/features/blogs/queries.ts
 // Variable: featuredArticlesQuery
@@ -291,7 +344,42 @@ export type SingleArticleBySlugQueryResult = {
     title: string | null;
   }> | null;
   publishedAt: string | null;
-  body: BlockContent | null;
+  body: Array<{
+    _key: string;
+  } & Accordion | {
+    _key: string;
+  } & Microform | {
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    caption?: string;
+    _type: "figure";
+    _key: string;
+  }> | null;
 } | null;
 // Variable: listArticlesQuery
 // Query: *[_type == "post" && status == "ready"]  | order(publishedAt desc)  {      title,  "slug": slug.current,  "image": mainImage.asset->url,  categories[]->{description, title},  publishedAt,  }

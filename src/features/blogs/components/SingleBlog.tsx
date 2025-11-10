@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { PortableText } from "@portabletext/react";
 import { toHTML } from '@portabletext/to-html'
 import { Typography } from "@mui/material";
 import { BlockContent } from "../../../libs/sanity";
@@ -7,7 +6,7 @@ import { Seo } from "../../../common/components/Seo";
 import { BlogProvider } from "../context";
 import { useBlog, useBlogItemQuery } from "../hooks";
 import { ReadablePublishingTime } from "./ReadablePublishingTime";
-import { BlogFigure } from "./Figure";
+import { BlogRendererBlockContent } from "./content";
 
 type SingleBlogProps = { slug: string; };
 
@@ -53,14 +52,7 @@ const RenderBlog = ({
         {image && <img src={image} alt={title} height="200" />}
       </div>
       <ReadablePublishingTime publishedAt={publishedAt} />
-      <PortableText
-        value={body}
-        components={{
-          types: {
-            figure: BlogFigure,
-          },
-        }}
-      />
+      <BlogRendererBlockContent value={body} />
     </div>
   );
 };

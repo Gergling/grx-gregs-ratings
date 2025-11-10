@@ -1,5 +1,5 @@
 import { Button, FormControl, FormLabel } from "@mui/material";
-import { SurveryControlProps } from "../types";
+import { SurveyControlProps } from "../types";
 import { PropsWithChildren } from "react";
 import { SurveyControlNavigation } from "./Control.style";
 
@@ -10,15 +10,16 @@ export const SurveyControl = ({
   handlePrevious,
   isNextEnabled,
   isPreviousEnabled,
-}: SurveryControlProps & PropsWithChildren) => (
+  nextButtonText,
+}: SurveyControlProps & PropsWithChildren) => (
   <FormControl>
     <FormLabel id="radio-buttons-group-label">
       {label}
     </FormLabel>
     {children}
     <SurveyControlNavigation>
-      <Button onClick={handlePrevious} disabled={!isPreviousEnabled}>Previous</Button>
-      <Button onClick={handleNext} disabled={!isNextEnabled}>Next</Button>
+      {handlePrevious && <Button onClick={handlePrevious} disabled={!isPreviousEnabled}>Previous</Button>}
+      {handleNext && <Button onClick={handleNext} disabled={!isNextEnabled}>{nextButtonText || 'Next'}</Button>}
     </SurveyControlNavigation>
   </FormControl>
 );

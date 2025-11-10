@@ -1,9 +1,9 @@
 import { SanityImageSource } from '@sanity/asset-utils';
 import { useMemo } from 'react';
-import { useBlog } from '../hooks';
+import { useBlog } from '../../hooks';
 import { Typography, useTheme } from '@gergling/ui-components';
 
-export const BlogFigure = ({ value }: { value: SanityImageSource }) => {
+export const BlogRendererFigure = ({ value }: { value: SanityImageSource }) => {
   const { getBlogImageData } = useBlog();
   const { caption, src, width, height } = useMemo(() => getBlogImageData(value), [getBlogImageData, value]);
   const { theme: { typography } } = useTheme();

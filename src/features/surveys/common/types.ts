@@ -11,10 +11,11 @@ export type SurveyProgressProps = {
   markers: SurveyProgressMarker[];
 };
 
-export type SurveryControlProps = {
+export type SurveyControlProps = {
   label: ReactNode;
-  handleNext: () => void;
-  handlePrevious: () => void;
-  isNextEnabled: boolean;
-  isPreviousEnabled: boolean;
+  handleNext?: () => void;
+  handlePrevious?: () => void;
+  isNextEnabled?: boolean;
+  isPreviousEnabled?: boolean;
+  nextButtonText?: string;
 };
