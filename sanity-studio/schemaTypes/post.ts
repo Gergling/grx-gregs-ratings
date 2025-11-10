@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import { ChecklistItem } from '../../src/libs/sanity/sanity.types';
 
 export default defineType({
   name: 'post',
@@ -103,7 +104,6 @@ export default defineType({
     }),
   ],
 
-  // TODO: Use this in the query.
   preview: {
     select: {
       title: 'title',
@@ -114,7 +114,7 @@ export default defineType({
     },
     prepare(selection) {
       const { author, checklist, standard } = selection;
-      const completed = (checklist || []).filter(() => checklist.isComplete === true).length;
+      const completed = (checklist as ChecklistItem[]).filter((item) => item.isComplete === true).length;
       const progress = checklist ? `Progress: ${completed}/${checklist.length}` : false;
       const description = [`Standard: ${standard}`, progress].filter(Boolean).join(' - ');
       return {

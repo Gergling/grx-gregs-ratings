@@ -4,6 +4,7 @@ export default defineType({
   name: 'figure',
   title: 'Figure',
   type: 'image',
+  icon: () => '🖼️',
   fields: [
     defineField({
       name: 'alt',
