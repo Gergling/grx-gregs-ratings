@@ -4,13 +4,17 @@ import { SurveyControl } from '../../common/components/Control';
 import { SurveyProgress } from '../../common/components/Progress';
 import { RadioGroup } from '../../common/components/RadioGroup';
 import { useMemo } from 'react';
+import { WRMArchetypeDisplay } from './ArchetypeDisplay';
 
 export const PersonalityType = () => {
   const {
+    isComplete,
+    // navigateAnyQuestion, // TODO: For allowing click-through on progress.
     navigateNextQuestion,
     navigatePreviousQuestion,
     navigation,
     progress,
+    scores,
     selectedAnswer,
     setSelectedAnswer,
   } = useWRMSurvey();
@@ -21,19 +25,24 @@ export const PersonalityType = () => {
   );
 
   return <Pane>
-    <SurveyProgress {...progress} />
-    <SurveyControl
-      label={navigation.question.title}
-      handleNext={navigateNextQuestion}
-      handlePrevious={navigatePreviousQuestion}
-      isNextEnabled={!!selectedAnswer}
-      isPreviousEnabled={!navigation.isFirst}
-    >
-      <RadioGroup
-        options={options}
-        selectedAnswer={selectedAnswer}
-        setSelectedAnswer={setSelectedAnswer}
-      />
-    </SurveyControl>
+    {isComplete
+      ? <WRMArchetypeDisplay scores={scores} />
+      : <>
+        <SurveyProgress {...progress} />
+        <SurveyControl
+          label={navigation.question.title}
+          handleNext={navigateNextQuestion}
+          handlePrevious={navigatePreviousQuestion}
+          isNextEnabled={!!selectedAnswer}
+          isPreviousEnabled={!navigation.isFirst}
+        >
+          <RadioGroup
+            options={options}
+            selectedAnswer={selectedAnswer}
+            setSelectedAnswer={setSelectedAnswer}
+          />
+        </SurveyControl>
+      </>
+    }
   </Pane>
 };

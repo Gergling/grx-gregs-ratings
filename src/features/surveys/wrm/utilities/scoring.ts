@@ -1,24 +1,27 @@
 import { Seeder } from "../../../../common/types";
 import { ARCHETYPE_KEYS, ArchetypeKey } from "../config";
-import { ArchetypeScores, ScoringCategoryProps, WRMStoreAnswer } from "../types";
+import { WRM_ARCHETYPE_LABELS } from "../constants";
+import { ArchetypeScores, ScoringCategoryProps, WRMArchetypeReadableMapping, WRMStoreAnswer } from "../types";
 
 export const getInitialScores = () => ARCHETYPE_KEYS.reduce((scores, archetypeKey) => ({
   ...scores,
   [archetypeKey]: 0,
 }), {} as ArchetypeScores);
 
-const getArchetype = (score: number, scores: ArchetypeScores) =>
+const getArchetypeByScore = (score: number, scores: ArchetypeScores) =>
   ARCHETYPE_KEYS.find((archetypeKey) => scores[archetypeKey] === score);
+
+const getSortedArchetypes = (scores: ArchetypeScores) => Object
+  .entries(scores)
+  .sort(([keyA, scoreA], [keyB, scoreB]) => {
+    if (scoreB !== scoreA) return scoreB - scoreA;
+    return keyA.localeCompare(keyB); // Deterministic sort for ties
+  });
 
 export const getHighestScoringArchetype = (
   scores: ArchetypeScores
 ): ArchetypeKey => {
-  const [[archetype]] = Object
-    .entries(scores)
-    .sort(([keyA, scoreA], [keyB, scoreB]) => {
-      if (scoreB !== scoreA) return scoreB - scoreA;
-      return keyA.localeCompare(keyB); // Deterministic sort for ties
-    });
+  const [[archetype]] = getSortedArchetypes(scores);
   return archetype as ArchetypeKey;
 };
 
@@ -30,8 +33,8 @@ export const getScoringCategory = (scores: ArchetypeScores): ScoringCategoryProp
 
   const min = Math.min(...scoreSet);
   const max = Math.max(...scoreSet);
-  const leadKey = getArchetype(max, scores);
-  const trailerKey = getArchetype(min, scores);
+  const leadKey = getArchetypeByScore(max, scores);
+  const trailerKey = getArchetypeByScore(min, scores);
 
   if (!leadKey || !trailerKey) throw new Error('Something has gone very wrong.');
 
@@ -73,6 +76,8 @@ export const getScoringCategory = (scores: ArchetypeScores): ScoringCategoryProp
   };
 };
 
+// This function is only for running during the adaptive phase.
+// It will not be helpful during the initial phase.
 export const getAdaptiveOmittedArchetype = (scores: ArchetypeScores, seeder: Seeder): ArchetypeKey => {
   const randomIdx = Math.floor((seeder() * ARCHETYPE_KEYS.length) % ARCHETYPE_KEYS.length);
   const category = getScoringCategory(scores);
@@ -107,3 +112,15 @@ export const getScores = (
   }),
   getInitialScores()
 );
+
+export const getArchetype = (scores: ArchetypeScores) => {
+  const archetypeAdjectives: WRMArchetypeReadableMapping = {
+    mage: 'Eldritch',
+    rogue: 'Shadow',
+    warrior: 'Martial',
+  };
+  const [[primary], [secondary]] = getSortedArchetypes(scores);
+  const noun = WRM_ARCHETYPE_LABELS[primary as ArchetypeKey];
+  const adjective = archetypeAdjectives[secondary as ArchetypeKey];
+  return { noun, adjective };
+};

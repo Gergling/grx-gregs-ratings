@@ -1,12 +1,12 @@
 import { TOTAL_INITIAL_QUESTIONS } from "../constants";
-import { WRMState, WRMSurveyProps } from "../types";
+import { WRMState, WRMSurveyPhase, WRMSurveyProps } from "../types";
 import { getScoringCategory } from "./scoring";
 
 export const getPhase = (
   answers: WRMState['answers'],
   choices: WRMSurveyProps['navigation']['question']['choices'],
   scores: WRMSurveyProps['scores']
-): WRMSurveyProps['phase'] => {
+): WRMSurveyPhase => {
   // Check whether we're done with the initial questions yet.
   if (answers.length < TOTAL_INITIAL_QUESTIONS) return 'initial';
 

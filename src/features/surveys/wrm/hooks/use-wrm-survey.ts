@@ -3,12 +3,10 @@ import { surveyStoreWRM } from "../stores/wrm-survey-store";
 import { TOTAL_INITIAL_QUESTIONS } from "../constants";
 import { useSurveyProgress } from "../../common/hooks/use-progress";
 import { ArchetypeKey } from "../config";
-import { WRMState, WRMSurveyProps } from "../types";
+import { WRMSurveyProps } from "../types";
 import { getNavigation, getPhase, getScores } from "../utilities";
 
-export const useWRMSurvey = (): WRMSurveyProps & {
-  answers: WRMState['answers'];
-} => {
+export const useWRMSurvey = (): WRMSurveyProps => {
   const store = surveyStoreWRM();
   const {
     answers,
@@ -37,11 +35,8 @@ export const useWRMSurvey = (): WRMSurveyProps & {
     () => getPhase(answers, navigation.question.choices, scores),
     [answers, navigation.question.choices, scores]
   );
+  const isComplete = useMemo(() => phase === 'done', [phase]);
 
-  const isAnswerSelected = useMemo(
-    () => !!selectedAnswer,
-    [selectedAnswer]
-  );
   const lastMarker = useMemo(() => phase !== 'final', [phase]);
   const progress = useSurveyProgress(answers.length, page, TOTAL_INITIAL_QUESTIONS, lastMarker);
 
@@ -64,18 +59,14 @@ export const useWRMSurvey = (): WRMSurveyProps & {
   );
 
   return {
-    isAnswerSelected,
+    isComplete,
     navigateAnyQuestion,
     navigateNextQuestion,
     navigatePreviousQuestion,
     navigation,
     progress,
-    phase,
     scores,
     selectedAnswer,
     setSelectedAnswer,
-
-    // For testing:
-    answers,
   };
 };

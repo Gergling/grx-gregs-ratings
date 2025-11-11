@@ -43,6 +43,9 @@ type Action = {
 
 export type WRMStoreProps = WRMState & Action;
 
+// Computed from last question and scores.
+export type WRMSurveyPhase = 'initial' | 'adaptive' | 'final' | 'done';
+
 export type WRMSurveyProps = {
   // Current answer state.
   selectedAnswer?: ArchetypeKey;
@@ -52,9 +55,6 @@ export type WRMSurveyProps = {
   navigateAnyQuestion: (page: number) => void;
   navigatePreviousQuestion: () => void;
   navigateNextQuestion: () => void;
-
-  // Computed from current selected answer.
-  isAnswerSelected: boolean;
 
   // Computed from page number and current selected answer.
   navigation: {
@@ -66,9 +66,11 @@ export type WRMSurveyProps = {
   // Computed from answers.
   scores: ArchetypeScores;
 
-  // Computed from last question and scores.
-  phase: 'initial' | 'adaptive' | 'final' | 'done';
-
   // Computed from page number, answers and phase.
   progress: SurveyProgressProps;
+
+  // Computed from phase, which is computed from last question and scores.
+  isComplete: boolean;
 };
+
+export type WRMArchetypeReadableMapping = { [K in ArchetypeKey]: string; };
