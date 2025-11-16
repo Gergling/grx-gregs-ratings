@@ -1,5 +1,5 @@
 import { Seeder } from "../../../common/types";
-import { SurveyProgressProps } from "../common/types";
+import { SurveyControlProps, SurveyProgressProps } from "../common/types";
 import { ArchetypeKey, WRMQuestion } from "./config";
 
 export type ArchetypeScores = {
@@ -52,9 +52,9 @@ export type WRMSurveyProps = {
   setSelectedAnswer: (answer: ArchetypeKey) => void;
 
   // Question navigation state.
-  navigateAnyQuestion: (page: number) => void;
-  navigatePreviousQuestion: () => void;
-  navigateNextQuestion: () => void;
+  // navigateAnyQuestion: (page: number) => void;
+  // navigatePreviousQuestion: () => void;
+  // navigateNextQuestion: () => void;
 
   // Computed from page number and current selected answer.
   navigation: {
@@ -71,6 +71,8 @@ export type WRMSurveyProps = {
 
   // Computed from phase, which is computed from last question and scores.
   isComplete: boolean;
+
+  surveyControlProps: SurveyControlProps;
 };
 
 export type WRMArchetypeReadableMapping = { [K in ArchetypeKey]: string; };

@@ -1,47 +1,58 @@
 import { ArchetypeKey } from "../config";
-import { WRMStoreProps } from "../types";
+import { WRMStoreAnswer, WRMStoreProps } from "../types";
 import { generateQuestion, getOmittedArchetype } from "./question";
 import { getScores } from "./scoring";
-import { getNavigation, getPhase } from "./update";
+import { getNavigation, getPhase, isLastPage } from "./update";
+
+const getAnswers = (
+  state: WRMStoreProps,
+  answer?: ArchetypeKey
+): WRMStoreAnswer[] => {
+  // If there is no answer selected, we can just leave it as is.
+  if (!answer) return state.answers;
+
+  // Check whether the current page is the last page.
+  const currentPageIsLast = isLastPage(state.answers.length, state.page);
+
+  // For the last page, if the user is attempting to move forward, we can append the answer.
+  // TODO: Every navigation away from a page should always make sure the current page is set.
+  // if (currentPageIsLast && page > state.page) {
+  if (currentPageIsLast) {
+    return [...state.answers, { answer, question: state.lastQuestion }];
+  }
+
+  return state.answers.map((props, answerPage) =>
+    state.page === answerPage ? { ...props, answer } : props
+  );
+};
 
 export const navigateQuestionFactory = (
   page: number,
   answer?: ArchetypeKey
 ) => (state: WRMStoreProps): WRMStoreProps => {
-  // Check whether the current page is the last page.
   const {
-    isLast: currentPageIsLast,
+    // isLast: currentPageIsLast,
+    question: currentQuestion,
   } = getNavigation(state.answers, state.lastQuestion, state.page);
 
   // If an answer is chosen, make sure it is updated for the current question.
-  const answers = answer
-    ? currentPageIsLast
-      ? [...state.answers, { answer, question: state.lastQuestion }]
-      : state.answers.map((props, answerPage) => {
-        if (state.page === answerPage) return { ...props, answer };
-        return props;
-      })
-    : state.answers;
+  const answers = getAnswers(state, answer);
+
+  const scores = getScores(answers);
+  const phase = getPhase(answers.length, currentQuestion.choices, scores);
+
+  // If we're done, we don't need to generate a new question.
+  if (phase === 'done') return {
+    ...state,
+    answers,
+    page,
+  };
 
   // Check whether the next page will be the last page.
-  const {
-    isLast: nextPageIsLast,
-  } = getNavigation(answers, state.lastQuestion, page);
+  const nextPageIsLast = isLastPage(answers.length, page);
 
   // If we have navigated to the last page, we need to generate the next page.
   if (nextPageIsLast) {
-    const scores = getScores(answers);
-    const phase = getPhase(answers, state.lastQuestion.choices, scores);
-
-    // If we have discerned that we are done with the questions, we can finish
-    // up here.
-    if (phase === 'done') return {
-      ...state,
-      answers,
-      page,
-    };
-
-    // If we're not done, we need to generate the next question. find the omitted
     const omittedArchetype = getOmittedArchetype(phase, scores, state.seeder);
     const {
       remainingQuestions: questions,

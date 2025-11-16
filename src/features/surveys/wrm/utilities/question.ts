@@ -1,7 +1,7 @@
 import { Seeder } from "../../../../common/types";
 import { getShuffledArray } from "../../../../common/utilities";
 import { ArchetypeKey, WRMQuestion } from "../config";
-import { ArchetypeScores, WRMSurveyProps } from "../types";
+import { ArchetypeScores, WRMSurveyPhase } from "../types";
 import { getAdaptiveOmittedArchetype, getHighestScoringArchetype } from "./scoring";
 
 export const generateQuestion = (
@@ -28,7 +28,7 @@ export const generateQuestion = (
 };
 
 export const getOmittedArchetype = (
-  phase: WRMSurveyProps['phase'],
+  phase: WRMSurveyPhase,
   scores: ArchetypeScores,
   seeder: Seeder
 ): ArchetypeKey => phase === 'initial'

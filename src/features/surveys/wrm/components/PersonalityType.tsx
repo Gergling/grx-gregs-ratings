@@ -9,14 +9,12 @@ import { WRMArchetypeDisplay } from './ArchetypeDisplay';
 export const PersonalityType = () => {
   const {
     isComplete,
-    // navigateAnyQuestion, // TODO: For allowing click-through on progress.
-    navigateNextQuestion,
-    navigatePreviousQuestion,
     navigation,
     progress,
     scores,
     selectedAnswer,
     setSelectedAnswer,
+    surveyControlProps,
   } = useWRMSurvey();
 
   const options = useMemo(
@@ -30,11 +28,7 @@ export const PersonalityType = () => {
       : <>
         <SurveyProgress {...progress} />
         <SurveyControl
-          label={navigation.question.title}
-          handleNext={navigateNextQuestion}
-          handlePrevious={navigatePreviousQuestion}
-          isNextEnabled={!!selectedAnswer}
-          isPreviousEnabled={!navigation.isFirst}
+          {...surveyControlProps}
         >
           <RadioGroup
             options={options}

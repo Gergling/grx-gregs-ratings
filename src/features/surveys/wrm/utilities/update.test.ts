@@ -9,7 +9,7 @@ describe('update utilities', () => {
       const answers = mockAnswers(TOTAL_INITIAL_QUESTIONS - 1);
       const scores = { mage: 0, rogue: 0, warrior: 0 };
       const choices = mockQuestion(0).choices;
-      const phase = getPhase(answers, choices, scores);
+      const phase = getPhase(answers.length, choices, scores);
       expect(phase).toBe('initial');
     });
 
@@ -18,7 +18,7 @@ describe('update utilities', () => {
       // Scores are unique, so category is 'done'
       const scores = { mage: 5, rogue: 3, warrior: 1 };
       const choices = mockQuestion(0).choices;
-      const phase = getPhase(answers, choices, scores);
+      const phase = getPhase(answers.length, choices, scores);
       expect(phase).toBe('done');
     });
 
@@ -31,7 +31,7 @@ describe('update utilities', () => {
         { value: 'warrior' as const, text: 'w' },
         { value: 'rogue' as const, text: 'r' },
       ];
-      const phase = getPhase(answers, choices, scores);
+      const phase = getPhase(answers.length, choices, scores);
       expect(phase).toBe('final');
     });
 
@@ -44,7 +44,7 @@ describe('update utilities', () => {
         { value: 'warrior' as const, text: 'w' },
         { value: 'rogue' as const, text: 'r' },
       ];
-      const phase = getPhase(answers, choices, scores);
+      const phase = getPhase(answers.length, choices, scores);
       expect(phase).toBe('adaptive');
     });
   });

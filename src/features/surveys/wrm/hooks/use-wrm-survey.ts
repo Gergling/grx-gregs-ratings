@@ -5,6 +5,7 @@ import { useSurveyProgress } from "../../common/hooks/use-progress";
 import { ArchetypeKey } from "../config";
 import { WRMSurveyProps } from "../types";
 import { getNavigation, getPhase, getScores } from "../utilities";
+import { SurveyControlProps } from "../../common/types";
 
 export const useWRMSurvey = (): WRMSurveyProps => {
   const store = surveyStoreWRM();
@@ -32,17 +33,22 @@ export const useWRMSurvey = (): WRMSurveyProps => {
     [answers]
   );
   const phase = useMemo(
-    () => getPhase(answers, navigation.question.choices, scores),
+    () => getPhase(answers.length, navigation.question.choices, scores),
     [answers, navigation.question.choices, scores]
   );
-  const isComplete = useMemo(() => phase === 'done', [phase]);
 
-  const lastMarker = useMemo(() => phase !== 'final', [phase]);
+  const lastMarker = useMemo(() => phase !== 'done', [phase]);
   const progress = useSurveyProgress(answers.length, page, TOTAL_INITIAL_QUESTIONS, lastMarker);
 
-  const navigateAnyQuestion = useCallback((page: number) => {
-    navigateQuestion(page, selectedAnswer);
-  }, [navigateQuestion, selectedAnswer]);
+  const isComplete = useMemo(
+    () => phase === 'done' && page >= answers.length,
+    [answers.length, page, phase]
+  );
+
+  // TODO: For allowing click-through on progress.
+  // const navigateAnyQuestion = useCallback((page: number) => {
+  //   navigateQuestion(page, selectedAnswer);
+  // }, [navigateQuestion, selectedAnswer]);
 
   const navigatePreviousQuestion = useCallback(() => {
     navigateQuestion(page - 1, selectedAnswer);
@@ -52,6 +58,26 @@ export const useWRMSurvey = (): WRMSurveyProps => {
     navigateQuestion(page + 1, selectedAnswer);
   }, [navigateQuestion, page, selectedAnswer]);
 
+  const surveyControlProps = useMemo(
+    (): SurveyControlProps => {
+      const handleNext = navigateNextQuestion;
+      const handlePrevious = navigatePreviousQuestion;
+      const isNextEnabled = !!selectedAnswer;
+      const isPreviousEnabled = !navigation.isFirst;
+      const label = navigation.question.title;
+      const nextButtonText = 'Next';
+      return {
+        handleNext,
+        handlePrevious,
+        isNextEnabled,
+        isPreviousEnabled,
+        label,
+        nextButtonText,
+      };
+    },
+    [navigation, navigateNextQuestion, navigatePreviousQuestion, selectedAnswer]
+  );
+
   useEffect(() => initialise(), [initialise]);
   useEffect(
     () => setSelectedAnswer(answers[page]?.answer),
@@ -60,13 +86,11 @@ export const useWRMSurvey = (): WRMSurveyProps => {
 
   return {
     isComplete,
-    navigateAnyQuestion,
-    navigateNextQuestion,
-    navigatePreviousQuestion,
     navigation,
     progress,
     scores,
     selectedAnswer,
     setSelectedAnswer,
+    surveyControlProps,
   };
 };
